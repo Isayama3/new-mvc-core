@@ -1,4 +1,4 @@
-@extends('layouts.partials.components.table')
+@extends('admin.layouts.partials.crud-components.table')
 
 @section('filter')
     @include('admin.admin.filter', [

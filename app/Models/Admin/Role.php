@@ -17,10 +17,21 @@ use Spatie\Permission\Models\Role as SpatiRole;
 class Role extends SpatiRole
 {
     use Timestamp, FilterSort, LogsActivity, Rememberable;
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            if (request()->has('permissions')) {
+            }
+        });
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()->logAll();
     }
+
     public function getTable()
     {
         return $this->table ?? Str::snake(Str::pluralStudly(class_basename($this)));

@@ -1,4 +1,4 @@
-@extends('layouts.partials.components.table')
+@extends('admin.layouts.partials.crud-components.table')
 
 @section('filter')
     @include('admin.roles.filter', [
@@ -21,18 +21,15 @@
                 <td>{{ $record->id }}</td>
                 <td>{{ $record->name }}</td>
                 <td>
-                    <button type="button" class="btn icon btn-info" data-bs-toggle="modal" data-bs-target="#permissions">
+                    <button type="button" class="btn icon btn-info" data-bs-toggle="modal" data-bs-target="#permissions_{{$record->id}}">
                         <i class="bi bi-info-circle"></i>
                     </button>
-
-                    <div class="modal fade text-left" id="permissions" tabindex="-1" aria-labelledby="myModalLabel140"
+                    <div class="modal fade text-left" id="permissions_{{$record->id}}" tabindex="-1" aria-labelledby="myModalLabel140"
                         style="display: none;" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
                             <div class="modal-content">
                                 <div class="modal-header bg-info">
-                                    <h5 class="modal-title white" id="myModalLabel140">info
-                                        Modal
-                                    </h5>
+                                    <h5 class="modal-title white" id="myModalLabel140">{{ __('admin.Permissions') }}</h5>
                                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -43,24 +40,16 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    Tart lemon drops macaroon oat cake chocolate toffee
-                                    chocolate
-                                    bar icing. Pudding jelly beans
-                                    carrot cake pastry gummies cheesecake lollipop. I love
-                                    cookie
-                                    lollipop cake I love sweet
-                                    gummi bears cupcake dessert.
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                                        <i class="bx bx-x d-block d-sm-none"></i>
-                                        <span class="d-none d-sm-block">Close</span>
-                                    </button>
-
-                                    <button type="button" class="btn btn-info ms-1" data-bs-dismiss="modal">
-                                        <i class="bx bx-check d-block d-sm-none"></i>
-                                        <span class="d-none d-sm-block">Accept</span>
-                                    </button>
+                                    <div class="badges">
+                                        @foreach ($record->permissions->groupBy('group') as $group => $permissions)
+                                            <span>{{ $group }}</span>
+                                            <br>
+                                            @foreach ($permissions as $permission)
+                                                <span class="badge bg-primary">{{ $permission->name }}</span>
+                                            @endforeach
+                                            <hr>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
                         </div>

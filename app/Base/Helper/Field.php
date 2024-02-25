@@ -70,7 +70,7 @@ class Field
      */
     public static function text($name, $label, $value = null, $required = 'true', $placeholder = null)
     {
-        return view('layouts.partials.form-fields.text', compact('name', 'label', 'value', 'required', 'placeholder'));
+        return view('admin.layouts.partials.form-fields.text', compact('name', 'label', 'value', 'required', 'placeholder'));
     }
 
     /**
@@ -81,7 +81,7 @@ class Field
      */
     public static function email($name, $label, $value = null, $required = 'true', $placeholder = null)
     {
-        return view('layouts.partials.form-fields.email', compact('name', 'label', 'value', 'required', 'placeholder'));
+        return view('admin.layouts.partials.form-fields.email', compact('name', 'label', 'value', 'required', 'placeholder'));
     }
 
     /**
@@ -91,7 +91,7 @@ class Field
      */
     public static function number($name, $label, $value = null, $required = 'true', $placeholder = null)
     {
-        return view('layouts.partials.form-fields.number', compact('name', 'label', 'value', 'required', 'placeholder'));
+        return view('admin.layouts.partials.form-fields.number', compact('name', 'label', 'value', 'required', 'placeholder'));
     }
 
     /**
@@ -101,7 +101,7 @@ class Field
      */
     public static function password($name, $label, $required = 'true', $placeholder = null)
     {
-        return view('layouts.partials.form-fields.password', compact('name', 'label', 'required', 'placeholder'));
+        return view('admin.layouts.partials.form-fields.password', compact('name', 'label', 'required', 'placeholder'));
     }
 
     /**
@@ -116,7 +116,7 @@ class Field
     public static function select($name, $label, $options, $selected = null, $required = 'true', $placeholder = null)
     {
         $placeholder = __('admin_panel.choose');
-        return view('layouts.partials.form-fields.select', compact('name', 'label', 'options', 'selected', 'placeholder', 'required', 'placeholder'));
+        return view('admin.layouts.partials.form-fields.select', compact('name', 'label', 'options', 'selected', 'placeholder', 'required', 'placeholder'));
     }
 
     /**
@@ -128,7 +128,7 @@ class Field
      */
     public static function checkBox($name, $label, $options, $value = null, $required = 'true', $placeholder = null)
     {
-        return view('layouts.partials.form-fields.check-box', compact('name', 'label', 'options', 'required', 'placeholder'));
+        return view('admin.layouts.partials.form-fields.check-box', compact('name', 'label', 'options', 'required', 'placeholder'));
     }
     /**
      * @param $name
@@ -137,7 +137,7 @@ class Field
      */
     public static function radio($name, $label, $options, $checked = null, $required = 'true', $placeholder = null)
     {
-        return view('layouts.partials.form-fields.radio', compact('name', 'label', 'options', 'checked', 'required', 'placeholder'));
+        return view('admin.layouts.partials.form-fields.radio', compact('name', 'label', 'options', 'checked', 'required', 'placeholder'));
     }
 
     /**
@@ -147,7 +147,7 @@ class Field
      */
     public static function textarea($name, $label, $value = null, $required = 'true', $placeholder = null)
     {
-        return view('layouts.partials.form-fields.textarea', compact('name', 'label', 'value', 'required', 'placeholder'));
+        return view('admin.layouts.partials.form-fields.textarea', compact('name', 'label', 'value', 'required', 'placeholder'));
     }
 
     /**
@@ -158,7 +158,7 @@ class Field
     public static function fileWithPreview($name, $label, $multiFile = false, $required = 'true', $placeholder = null)
     {
 
-        return view('layouts.partials.form-fields.file-with-preview', compact('name', 'label', 'multiFile', 'required', 'placeholder'));
+        return view('admin.layouts.partials.form-fields.file-with-preview', compact('name', 'label', 'multiFile', 'required', 'placeholder'));
     }
 
 
@@ -173,7 +173,7 @@ class Field
      */
     public static function multiFileUpload($name, $label, $plugin = "file_upload_preview", $required = 'true', $placeholder = null)
     {
-        return view('layouts.partials.form-fields.multiFile-upload', compact('name', 'label', 'plugin', 'required', 'placeholder'));
+        return view('admin.layouts.partials.form-fields.multiFile-upload', compact('name', 'label', 'plugin', 'required', 'placeholder'));
     }
 
     /**
@@ -184,7 +184,7 @@ class Field
      */
     public static function dateTime($name, $label, $value = null, $required = 'true', $placeholder = null)
     {
-        return view('layouts.partials.form-fields.date-time', compact('name', 'label', 'value', 'required', 'placeholder'));
+        return view('admin.layouts.partials.form-fields.date-time', compact('name', 'label', 'value', 'required', 'placeholder'));
     }
 
     /**
@@ -198,6 +198,6 @@ class Field
      */
     public static function dateRange($name, $label, $value = null, $max = null, $min = null, $required = 'true', $placeholder = null)
     {
-        return view('layouts.partials.form-fields.date-range', compact('name', 'label', 'value', 'max', 'min', 'required', 'placeholder'));
+        return view('admin.layouts.partials.form-fields.date-range', compact('name', 'label', 'value', 'max', 'min', 'required', 'placeholder'));
     }
 }

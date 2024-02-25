@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Permission extends Base
 {
-
     protected static function boot()
     {
         parent::boot();
@@ -16,6 +15,7 @@ class Permission extends Base
             $model->guard_name =  'admin';
         });
     }
+
     protected function routes(): Attribute
     {
         return Attribute::make(

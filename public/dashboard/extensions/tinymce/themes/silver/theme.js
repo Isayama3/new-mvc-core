@@ -4278,10 +4278,10 @@
     ]);
     const get$5 = (elem, info, defaultLtr, defaultRtl, defaultBottomLtr, defaultBottomRtl, dirElement) => {
       const isBottomToTop = dirElement.map(isBottomToTopDir).getOr(false);
-      const customLtr = info.layouts.map(ls => ls.onLtr(elem));
-      const customRtl = info.layouts.map(ls => ls.onRtl(elem));
-      const ltr = isBottomToTop ? info.layouts.bind(ls => ls.onBottomLtr.map(f => f(elem))).or(customLtr).getOr(defaultBottomLtr) : customLtr.getOr(defaultLtr);
-      const rtl = isBottomToTop ? info.layouts.bind(ls => ls.onBottomRtl.map(f => f(elem))).or(customRtl).getOr(defaultBottomRtl) : customRtl.getOr(defaultRtl);
+      const customLtr = info.admin.layouts.map(ls => ls.onLtr(elem));
+      const customRtl = info.admin.layouts.map(ls => ls.onRtl(elem));
+      const ltr = isBottomToTop ? info.admin.layouts.bind(ls => ls.onBottomLtr.map(f => f(elem))).or(customLtr).getOr(defaultBottomLtr) : customLtr.getOr(defaultLtr);
+      const rtl = isBottomToTop ? info.admin.layouts.bind(ls => ls.onBottomRtl.map(f => f(elem))).or(customRtl).getOr(defaultBottomRtl) : customRtl.getOr(defaultRtl);
       const f = onDirection(ltr, rtl);
       return f(elem);
     };
@@ -11323,7 +11323,7 @@
       const hotspot = detail.getHotspot(component).getOr(component);
       const type = 'hotspot';
       const overrides = detail.getAnchorOverrides();
-      return detail.layouts.fold(() => ({
+      return detail.admin.layouts.fold(() => ({
         type,
         hotspot,
         overrides

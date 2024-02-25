@@ -1,4 +1,4 @@
-@extends('admin.layouts.main',[
+@extends('admin.admin.layouts.main',[
                                 'page_header'       => __('المستخدمين'),
                                 'page_description'  => __('حسابي'),
                                 'link' => ''
@@ -17,7 +17,7 @@
 
         <div class="ibox-content">
             {{-- @include('flash::message')
-           @include('admin.layouts.partials.validation-errors') --}}
+           @include('admin.admin.layouts.partials.validation-errors') --}}
 
 
             {!! \App\Base\Helper\Field::fileWithPreview('photo',__('الصورة الشخصية')) !!}

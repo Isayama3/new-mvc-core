@@ -1,4 +1,4 @@
-@extends($global['base']['namespace'] . 'layouts.master')
+@extends($global['base']['namespace'] . 'admin.layouts.master')
 
 @section('content')
     <div class="section-header">

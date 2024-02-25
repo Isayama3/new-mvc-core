@@ -15,20 +15,21 @@ class RoleRequest extends AdminBaseRequest
                 }
             case 'POST': {
                     return [
-                        'name' => 'required|string|max:255',
-                        'email' => 'required|email|unique:admins',
-                        'phone' => 'required|string|min:10|max:15',
-                        'password' => 'required|string|min:8',
+                        'name' => 'required|unique:roles,name',
+                        'description' => 'nullable',
                     ];
                 }
             case 'PUT': {
                     return [
-                        'name' => 'required|string|max:255',
-                        'email' => 'required|email|unique:admins,email,' . $this->admin,
-                        'phone' => 'required|string|min:10|max:15',
-                        'password' => 'required|string|min:8',
+                        'name' => 'required|unique:roles,name,' . $this->role,
+                        'description' => 'nullable',
                     ];
                 }
         }
+    }
+
+    protected function passedValidation()
+    {
+        $this->merge(['guard_name' => 'admin']);
     }
 }

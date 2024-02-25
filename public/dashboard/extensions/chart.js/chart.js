@@ -2892,7 +2892,7 @@ function buildStacks(layouts) {
     const stacks = buildStacks(layouts);
     const { vBoxMaxWidth , hBoxMaxHeight  } = params;
     let i, ilen, layout;
-    for(i = 0, ilen = layouts.length; i < ilen; ++i){
+    for(i = 0, ilen = admin.layouts.length; i < ilen; ++i){
         layout = layouts[i];
         const { fullSize  } = layout.box;
         const stack = stacks[layout.stack];
@@ -5791,8 +5791,8 @@ class Chart {
             }
         });
         each(scales, (scale)=>{
-            layouts.configure(this, scale, scale.options);
-            layouts.addBox(this, scale);
+            admin.layouts.configure(this, scale, scale.options);
+            admin.layouts.addBox(this, scale);
         });
     }
  _updateMetasets() {
@@ -5910,7 +5910,7 @@ class Chart {
     }
  _updateScales() {
         each(this.scales, (scale)=>{
-            layouts.removeBox(this, scale);
+            admin.layouts.removeBox(this, scale);
         });
         this.ensureScalesHaveIDs();
         this.buildOrUpdateScales();
@@ -5958,7 +5958,7 @@ class Chart {
         }) === false) {
             return;
         }
-        layouts.update(this, this.width, this.height, minPadding);
+        admin.layouts.update(this, this.width, this.height, minPadding);
         const area = this.chartArea;
         const noArea = area.width <= 0 || area.height <= 0;
         this._layers = [];
@@ -8602,16 +8602,16 @@ var plugin_legend = {
             options,
             chart
         });
-        layouts.configure(chart, legend, options);
-        layouts.addBox(chart, legend);
+        admin.layouts.configure(chart, legend, options);
+        admin.layouts.addBox(chart, legend);
     },
     stop (chart) {
-        layouts.removeBox(chart, chart.legend);
+        admin.layouts.removeBox(chart, chart.legend);
         delete chart.legend;
     },
     beforeUpdate (chart, _args, options) {
         const legend = chart.legend;
-        layouts.configure(chart, legend, options);
+        admin.layouts.configure(chart, legend, options);
         legend.options = options;
     },
     afterUpdate (chart) {
@@ -8790,8 +8790,8 @@ function createTitle(chart, titleOpts) {
         options: titleOpts,
         chart
     });
-    layouts.configure(chart, title, titleOpts);
-    layouts.addBox(chart, title);
+    admin.layouts.configure(chart, title, titleOpts);
+    admin.layouts.addBox(chart, title);
     chart.titleBlock = title;
 }
 var plugin_title = {
@@ -8802,12 +8802,12 @@ var plugin_title = {
     },
     stop (chart) {
         const titleBlock = chart.titleBlock;
-        layouts.removeBox(chart, titleBlock);
+        admin.layouts.removeBox(chart, titleBlock);
         delete chart.titleBlock;
     },
     beforeUpdate (chart, _args, options) {
         const title = chart.titleBlock;
-        layouts.configure(chart, title, options);
+        admin.layouts.configure(chart, title, options);
         title.options = options;
     },
     defaults: {
@@ -8840,17 +8840,17 @@ var plugin_subtitle = {
             options,
             chart
         });
-        layouts.configure(chart, title, options);
-        layouts.addBox(chart, title);
+        admin.layouts.configure(chart, title, options);
+        admin.layouts.addBox(chart, title);
         map.set(chart, title);
     },
     stop (chart) {
-        layouts.removeBox(chart, map.get(chart));
+        admin.layouts.removeBox(chart, map.get(chart));
         map.delete(chart);
     },
     beforeUpdate (chart, _args, options) {
         const title = map.get(chart);
-        layouts.configure(chart, title, options);
+        admin.layouts.configure(chart, title, options);
         title.options = options;
     },
     defaults: {

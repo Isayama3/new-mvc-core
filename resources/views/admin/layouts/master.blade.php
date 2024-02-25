@@ -31,10 +31,10 @@
     <div id="app">
 
         {{-- NAVBAR --}}
-        @include('layouts.partials._navbar')
+        @include('admin.layouts.partials._navbar')
 
         {{-- SIDEBAR --}}
-        @include('layouts.partials._sidebar')
+        @include('admin.layouts.partials._sidebar')
 
         <div id="main">
             {{-- HEADER --}}
@@ -54,7 +54,7 @@
             </div>
 
             {{-- FOOTER --}}
-            @include('layouts.partials._footer')
+            @include('admin.layouts.partials._footer')
         </div>
     </div>
     <script src={{ asset('dashboard/static/js/components/dark.js') }}></script>
@@ -67,8 +67,8 @@
     <script src={{ asset('dashboard/extensions/jquery/jquery.min.js') }}></script>
     <script src={{ asset('dashboard/extensions/sweetalert2/sweetalert2.min.js') }}></script>
     <script src={{ asset('dashboard/static/js/pages/sweetalert2.js') }}></script>
-    @include('layouts.partials.scripts.delete')
-    @include('layouts.partials.scripts.plugins')
+    @include('admin.layouts.partials.scripts.delete')
+    @include('admin.layouts.partials.scripts.plugins')
     @stack('scripts')
 </body>
 

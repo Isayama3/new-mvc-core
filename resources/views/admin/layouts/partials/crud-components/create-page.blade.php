@@ -1,8 +1,8 @@
-@extends('layouts.master', [
+@extends('admin.layouts.master', [
     'page_header' => __('admin.create'),
 ])
 @section('content')
-    <section class="section">
+    {{-- <section class="section"> --}}
         <div class="row" id="table-hover-row">
             <div class="col-12">
                 <div class="card p-3">
@@ -25,6 +25,6 @@
                 </div>
             </div>
         </div>
-    </section>
+    {{-- </section> --}}
 
 @stop

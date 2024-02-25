@@ -1,4 +1,4 @@
-@extends('layouts.master', [
+@extends('admin.layouts.master', [
     'page_header' => __('admin.edit'),
 ])
 @section('content')
