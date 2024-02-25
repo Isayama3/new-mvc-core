@@ -1,4 +1,4 @@
-@extends('admin.admin.layouts.main',[
+@extends('admin.admins.layouts.main',[
                                 'page_header'       =>'',
                                 'page_description'  => __('لوحة التحكم'),
                                 'link' => ''

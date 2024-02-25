@@ -1,7 +1,7 @@
 @extends('admin.layouts.partials.crud-components.table')
 
 @section('filter')
-    @include('admin.admin.filter', [
+    @include('admin.admins.filter', [
         'create_route' => $create_route,
     ])
 @stop

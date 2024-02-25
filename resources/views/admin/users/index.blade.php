@@ -1,4 +1,4 @@
-@extends('admin.admin.layouts.main',[
+@extends('admin.admins.layouts.main',[
 								'page_header'		=> __('المستخدمين'),
 								'page_description'	=> __('عرض المستخدمين'),
 'link' => url('admin/users')

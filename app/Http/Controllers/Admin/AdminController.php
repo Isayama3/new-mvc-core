@@ -13,7 +13,7 @@ class AdminController extends Controller
         parent::__construct(
             $request,
             $model,
-            view_path: 'admin.admin.',
+            view_path: 'admin.admins.',
         );
     }
 
