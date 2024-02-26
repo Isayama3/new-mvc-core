@@ -4,7 +4,7 @@ namespace App\Http\Requests\Client\Api;
 
 use App\Base\Request\Web\AdminBaseRequest;
 
-class ProfileRequest extends AdminBaseRequest
+class ProfileRequest extends 
 {
     public function rules()
     {
