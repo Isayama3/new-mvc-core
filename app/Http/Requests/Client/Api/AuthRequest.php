@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests\Client\Api;
 
+use App\Base\Request\Api\ClientBaseRequest;
 use App\Base\Request\Web\AdminBaseRequest;
 
-class ProfileRequest extends 
+class ProfileRequest extends ClientBaseRequest
 {
     public function rules()
     {
