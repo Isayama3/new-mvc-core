@@ -8,4 +8,6 @@ use App\Base\Traits\Response\SendResponse;
 class AuthController extends Controller
 {
     use SendResponse;
+
+    
 }
