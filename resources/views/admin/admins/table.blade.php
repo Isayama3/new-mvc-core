@@ -23,7 +23,7 @@
                                         <td>{{ $record->email }}</td>
                                         <td>{{ $record->phone }}</td>
                                         <td>{{ $record->status }}</td>
-                                        <td style="display: flex;gap: 12px;">
+                                        <td style="display: flex;gap: 12px;justify-content: center;">
                                             <a href="{{ route($edit_route, $record->id) }}">
                                                 <button href class="btn btn-success float-start" type="button">
                                                     <i class="bi bi-pencil-square"></i>

@@ -302,4 +302,13 @@ class Controller extends \App\Http\Controllers\Controller
             ]);
         }
     }
+
+    public function toggleBoolean($id, $action)
+    {
+        $record = $this->model->findOrFail($id);
+        if (toggleBoolean($record, $action))
+            return response()->json(['status' => 'success']);
+
+        return response()->json(['status' => 'fail']);
+    }
 }

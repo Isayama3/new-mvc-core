@@ -10192,7 +10192,7 @@ html[data-bs-theme=dark] .navbar-fixed .navbar-top {
 
 html[data-bs-theme=dark] .navbar {
     height: var(--navbar-height);
-    padding: 1.5rem
+    /* padding: 1.5rem */
 }
 
 html[data-bs-theme=dark] .navbar .navbar-brand img {

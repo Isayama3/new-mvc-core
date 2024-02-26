@@ -23319,7 +23319,7 @@ body .bi:before,
 
 .navbar {
     height: var(--navbar-height);
-    padding: 1.5rem
+    /* padding: 1.5rem */
 }
 
 .navbar .navbar-brand img {
@@ -23928,7 +23928,7 @@ body .bi:before,
 
 #main {
     margin-left: 300px;
-    padding: 2rem;
+    padding: 1rem;
     min-height: 100vh
 }
 

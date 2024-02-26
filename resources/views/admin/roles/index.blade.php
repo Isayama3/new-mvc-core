@@ -1,5 +1,6 @@
-@extends('admin.layouts.partials.crud-components.table')
-
+@extends('admin.layouts.partials.crud-components.table', [
+    'page_header' => __('admin.create'),
+])
 @section('filter')
     @include('admin.roles.filter', [
         'create_route' => $create_route,
@@ -21,11 +22,12 @@
                 <td>{{ $record->id }}</td>
                 <td>{{ $record->name }}</td>
                 <td>
-                    <button type="button" class="btn icon btn-info" data-bs-toggle="modal" data-bs-target="#permissions_{{$record->id}}">
+                    <button type="button" class="btn icon btn-info" data-bs-toggle="modal"
+                        data-bs-target="#permissions_{{ $record->id }}">
                         <i class="bi bi-info-circle"></i>
                     </button>
-                    <div class="modal fade text-left" id="permissions_{{$record->id}}" tabindex="-1" aria-labelledby="myModalLabel140"
-                        style="display: none;" aria-hidden="true">
+                    <div class="modal fade text-left" id="permissions_{{ $record->id }}" tabindex="-1"
+                        aria-labelledby="myModalLabel140" style="display: none;" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
                             <div class="modal-content">
                                 <div class="modal-header bg-info">
@@ -55,7 +57,7 @@
                         </div>
                     </div>
                 </td>
-                <td style="display: flex;gap: 12px;">
+                <td style="display: flex;gap: 12px; justify-content: center;">
                     <a href="{{ route($edit_route, $record->id) }}">
                         <button href class="btn btn-success float-start" type="button">
                             <i class="bi bi-pencil-square"></i>

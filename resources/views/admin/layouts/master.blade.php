@@ -67,6 +67,7 @@
     <script src={{ asset('dashboard/extensions/jquery/jquery.min.js') }}></script>
     <script src={{ asset('dashboard/extensions/sweetalert2/sweetalert2.min.js') }}></script>
     <script src={{ asset('dashboard/static/js/pages/sweetalert2.js') }}></script>
+    <script src={{ asset('dashboard/js/helpers.js') }}></script>
     @include('admin.layouts.partials.scripts.delete')
     @include('admin.layouts.partials.scripts.plugins')
     @stack('scripts')

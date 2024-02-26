@@ -1,5 +1,5 @@
 <div class="form-group {{ $errors->has($name) ? 'is-invalid' : '' }}">
-    <label class="mb-1" for="{{ __('admin_panel.' . $name) }}">{{ __('admin_panel.' . $label) }}</label>
+    <label class="mb-1" for="{{ $name }}">{{ __('admin_panel.' . $label) }}</label>
     <input type="text" class="form-control" id="{{ $name }}" name={{ $name }}
         placeholder="{{ $placeholder ? __('admin_panel.' . $placeholder) : __('admin_panel.' . $label) }}"
         spellcheck="false" data-ms-editor="true" {{ $required == 'true' ? 'required' : '' }}

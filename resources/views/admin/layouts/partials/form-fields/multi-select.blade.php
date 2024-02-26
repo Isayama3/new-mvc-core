@@ -1,5 +1,5 @@
 <div class="form-group {{ $errors->has($name) ? 'has-error' : '' }}" id="{{ __('admin_panel.' . $name) }}_wrap">
-    <label for="{{ __('admin_panel.' . $name) }}">{{ __('admin_panel.' . $label) }}</label>
+    <label for="{{ $name }}">{{ __('admin_panel.' . $label) }}</label>
     <div class="">
         {!! Form::select($name . '[]', $options, $selected, [
             'data-placeholder' => $placeholder ? __('admin_panel.' . $placeholder) : __('admin_panel.' . $label),

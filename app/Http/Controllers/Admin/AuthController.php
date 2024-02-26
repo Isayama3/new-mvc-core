@@ -6,6 +6,8 @@ use App\Base\Rules\PasswordRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Admin\Web\AuthRequest;
+use App\Http\Requests\Admin\Web\ProfileRequest;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController
@@ -46,25 +48,22 @@ class AuthController
 
     public function updateProfileView()
     {
-        return view('admin.profile.edit');
+        $update_route = 'admin.profile.post';
+        $record = auth()->user();
+        return view('admin.profile.edit', compact('update_route', 'record'));
     }
 
-    public function updateProfile(Request $request)
+    public function updateProfile(ProfileRequest $request)
     {
         $user = Auth::user();
+        $user->update(Arr::except($request->validated(), ['old_password', 'new_password']));
 
-        if ($request->input('old-password')) {
-            $this->validate($request, [
-                'old-password' => 'required',
-                'password' => 'required|confirmed',
-            ]);
-
-            if (Hash::check($request->input('old-password'), $user->password)) {
-                $user->password = $request->input('password');
+        if ($request->input('old_password')) {
+            if (Hash::check($request->input('old_password'), $user->password)) {
+                $user->password = $request->input('new_password');
                 $user->save();
             } else {
-                session()->flash('fail', 'كلمة المرور غير صحيحة');
-                return view('manager.update-profile');
+                return redirect()->back()->with('fail', 'Record dsadsadsadas successfully!');
             }
         }
 

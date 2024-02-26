@@ -16,18 +16,4 @@ class AdminController extends Controller
             view_path: 'admin.admins.',
         );
     }
-
-    public function activation($id)
-    {
-        $admin = $this->model->findOrFail($id);
-        if ($admin->status != 1) {
-            $admin->update(['status' => 1]);
-        } else {
-            $admin->update(['status' => 0]);
-        }
-
-        return $this->shortSuccess(
-            ['admin' => $admin]
-        );
-    }
 }

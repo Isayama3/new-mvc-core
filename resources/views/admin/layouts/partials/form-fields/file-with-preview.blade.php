@@ -5,13 +5,13 @@
     <link rel="stylesheet" href={{ asset('dashboard/extensions/toastify-js/src/toastify.css') }}>
 @endpush
 
-<div class="form-group {{ $errors->has($name) ? 'has-error' : '' }}" id="{{ __('admin_panel.'.$name) }}_wrap">
-    <label class="mb-1" for="{{ __('admin_panel.'.$name) }}">{{ __('admin_panel.'.$label) }}</label>
+<div class="form-group {{ $errors->has($name) ? 'has-error' : '' }}" id="{{ __('admin_panel.' . $name) }}_wrap">
+    <label class="mb-1" for="{{ $name }}">{{ __('admin_panel.' . $label) }}</label>
     <div class="filepond--root image-preview-filepond filepond--hopper" data-style-button-remove-item-position="left"
         data-style-button-process-item-position="right" data-style-load-indicator-position="right"
         data-style-progress-indicator-position="right" data-style-button-remove-item-align="false"
         style="height: 76px;">
-        <input class="filepond--browser" type="file" id="filepond--browser-hmee4949e" name="{{ __('admin_panel.'.$name) }}"
+        <input class="filepond--browser" type="file" id="{{ $name }}" name="{{ __('admin_panel.' . $name) }}"
             aria-controls="filepond--assistant-hmee4949e" aria-labelledby="filepond--drop-label-hmee4949e"
             accept="image/png,image/jpg,image/jpeg">
         <div class="filepond--drop-label" style="transform: translate3d(0px, 0px, 0px); opacity: 1;"><label
@@ -31,7 +31,7 @@
         <fieldset class="filepond--data"></fieldset>
         <div class="filepond--drip"></div>
     </div>
-    <span class="help-block"><strong id="{{$name}}_error">{{ $errors->first($name) }}</strong></span>
+    <span class="help-block"><strong id="{{ $name }}_error">{{ $errors->first($name) }}</strong></span>
 </div>
 
 @push('scripts')

@@ -1,4 +1,6 @@
-@extends('admin.layouts.partials.crud-components.table')
+@extends('admin.layouts.partials.crud-components.table', [
+    'page_header' => __('admin.create'),
+])
 
 @section('filter')
     @include('admin.admins.filter', [
@@ -24,7 +26,13 @@
                 <td>{{ $record->name }}</td>
                 <td>{{ $record->email }}</td>
                 <td>{{ $record->phone }}</td>
-                <td>{{ $record->status }}</td>
+                <td> {!! \App\Base\Helper\Field::toggleBooleanView(
+                    name: 'status',
+                    label: 'status',
+                    model: $record,
+                    url: route('admin.admins.toggleBoolean', ['id' => $record->id, 'action' => 'status']),
+                ) !!}
+                </td>
                 <td style="display: flex;gap: 12px;">
                     <a href="{{ route($edit_route, $record->id) }}">
                         <button href class="btn btn-success float-start" type="button">

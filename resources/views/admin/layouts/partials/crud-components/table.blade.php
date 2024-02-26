@@ -1,5 +1,5 @@
 @extends('admin.layouts.master', [
-    'page_header' => __('admin.create'),
+    'page_header' => $page_header,
 ])
 @section('content')
     @yield('filter')
@@ -9,7 +9,7 @@
                 <div class="card">
                     <div class="card-content">
                         <div class="table-responsive py-1 px-3">
-                            <table class="table table-hover mb-0">
+                            <table class="table table-hover mb-0 text-center">
                                 @yield('table')
                             </table>
                         </div>

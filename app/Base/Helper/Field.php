@@ -200,4 +200,9 @@ class Field
     {
         return view('admin.layouts.partials.form-fields.date-range', compact('name', 'label', 'value', 'max', 'min', 'required', 'placeholder'));
     }
+
+    public static function toggleBooleanView($name, $label, $model, $url)
+    {
+        return view('admin.layouts.partials.form-fields.switch', compact('name', 'label', 'model', 'url'))->render();
+    }
 }
