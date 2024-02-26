@@ -2,11 +2,12 @@
 
 namespace App\Base\Controllers\API;
 
-use Helper\Attachment;
+use App\Base\Helper\Attachment;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Base\Exports\PublicExport;
 use App\Http\Controllers\Controller as LaraveController;
+use Closure;
 use App\Base\Traits\Model\FilterSort;
 use App\Base\Resources\SimpleResource;
 use Illuminate\Database\Eloquent\Model;
@@ -48,6 +49,7 @@ class Controller extends LaraveController
     protected $cache;
     protected $cache_time;
     protected $permissions;
+    protected $multiAuth;
 
 
     /**
@@ -69,7 +71,8 @@ class Controller extends LaraveController
         $media = false,
         $cache = true,
         $cache_time = 60 * 1,
-        $permissions = false
+        $permissions = false,
+        $multiAuth = false
     ) {
         $this->request = $request;
         $this->model = $model;
@@ -80,9 +83,21 @@ class Controller extends LaraveController
         $this->cache = $cache;
         $this->cache_time = $cache_time;
         $this->permissions = $permissions;
+
+        if ($multiAuth) {
+            $this->multiAuth();
+        }
     }
 
 
+    public function customWhen(): array
+    {
+        return [
+            'condition' => false,
+            'callback' => function ($q) {
+            },
+        ];
+    }
     public function can($route)
     {
         $action = 'api.v1.admin.' . $route;
@@ -105,7 +120,23 @@ class Controller extends LaraveController
         return [];
     }
 
-    public function processIndexColumns(): array
+    public function multiauth()
+    {
+        if (app()->runningInConsole()) {
+            return true;
+        }
+        $token = \Laravel\Sanctum\PersonalAccessToken::findToken($this->bearerToken());
+        if (!$token) {
+            abort(response()->json([
+                'endpointName' => app('request')->route()?->getName(),
+                'is_success' => false,
+                'status_code' => 401,
+                'message' => "Unauthenticated, please login first",
+            ], 401));
+        }
+    }
+
+    public function prosessIndexColumns(): array
     {
         $index_columns = $this->indexColumns() + [
             'created_at' => [],
@@ -131,13 +162,14 @@ class Controller extends LaraveController
         return [];
     }
 
-    public function processIndexActions()
+    public function prosessIndexActions()
     {
         $index_actions = $this->indexActions();
         $index_actions['detail'] = $index_actions['detail'] ?? true;
         $index_actions['remove'] = $index_actions['remove'] ?? true;
         $index_actions['update'] = $index_actions['update'] ?? true;
         $index_actions['create'] = $index_actions['create'] ?? true;
+        $index_actions['excel'] = $index_actions['excel'] ?? true;
 
         return $index_actions;
     }
@@ -145,12 +177,38 @@ class Controller extends LaraveController
 
     public function filter()
     {
+
         $filters  = [];
         foreach ($this->model->filterColumns() as $key => $value) {
             if (is_object($value)) {
-                $filters[] = $value->getName();
+                $column = $value->getName();
             } else {
-                $filters[] = $value;
+                $column = $value;
+            }
+            $words = [
+                '_id',
+                'id',
+                'password',
+                'vcode',
+                'deleted_at',
+                'status',
+                'state',
+                'active',
+                'get_',
+                'donation',
+                'sensor',
+                'is_',
+                'has_',
+            ];
+            $guard = true;
+            foreach ($words as $word) {
+                if (Str::contains($column, $word)) {
+                    $guard = false;
+                    break;
+                }
+            }
+            if ($guard) {
+                $filters[] = $column;
             }
         }
         return $filters;
@@ -169,11 +227,17 @@ class Controller extends LaraveController
      *
      * @return \Illuminate\Http\JsonResponse
      */
+
+    public function indexExceptIds()
+    {
+        return [];
+    }
     public function index()
     {
         $record = $this->model;
         if (in_array(FilterSort::class, class_uses_recursive($this->model))) {
-            $record = $record->setFilters()->defaultSort('-created_at');
+            $sort_column = method_exists($this->model, 'customSortColumn') ? $this->model->customSortColumn() : '-created_at';
+            $record = $record->setFilters()->defaultSort($sort_column);
         } else {
             $record = $this->model->where($this->queryItem)->latest();
         }
@@ -181,6 +245,13 @@ class Controller extends LaraveController
         if (!empty($this->relations())) {
             $record = $record->with(...$this->relations());
         }
+
+        if (!empty($this->indexExceptIds())) {
+            $record = $record->whereNotIn('id', $this->indexExceptIds());
+        }
+
+        $record = $record->when($this->customWhen()['condition'], $this->customWhen()['callback']);
+
 
         if ($this->cache) {
             $record = $record->remember($this->cache_time)->cacheTags($this->model->getTableName());
@@ -191,8 +262,8 @@ class Controller extends LaraveController
             $this->resource::collection($record),
             withmeta: true,
             permissions: $this->permissions,
-            columns: $this->processIndexColumns(),
-            actions: $this->processIndexActions(),
+            columns: $this->prosessIndexColumns(),
+            actions: $this->prosessIndexActions(),
             filter: $this->filter(),
         );
     }
@@ -201,7 +272,11 @@ class Controller extends LaraveController
 
     public function list()
     {
-        $record = $this->model->take(3000)->remember($this->cache_time)->cacheTags($this->model->getTableName() . '-list')->get(['id', 'name']);
+        $record = $this->model;
+        if (!empty($this->indexExceptIds())) {
+            $record = $record->whereNotIn('id', $this->indexExceptIds());
+        }
+        $record = $record->take(3000)->remember($this->cache_time)->cacheTags($this->model->getTableName() . '-list')->get(['id', 'name']);
         return $this->sendResponse(SimpleResource::collection($record));
     }
 
@@ -231,7 +306,7 @@ class Controller extends LaraveController
             $this->model->flushCache($this->model->getTableName() . '-list');
         }
 
-        $record = $this->model->create($this->request->validated());
+        $record = $this->model->create(Arr::except($this->request->validated(), 'img'));
 
         if (!empty(request()->media)) {
             $options = [
@@ -245,22 +320,17 @@ class Controller extends LaraveController
             }
         }
 
-
-        if (request()->has('img')) {
+        if (request()->has('img') && !is_null(request()->img)) {
             $path = request()->file('img')->store('public');
             $record->img = str_replace('public/', 'storage/', $path);
             $record->save();
         }
-
-
-
 
         $record->fresh();
 
         if (!empty($this->relations())) {
             $record = $record->load(...$this->relations());
         }
-
 
         $this->model = $record;
         return $this->sendResponse(
@@ -311,8 +381,7 @@ class Controller extends LaraveController
                 }
             }
         }
-
-        if (request()->has('img')) {
+        if (request()->has('img') && !is_null(request()->img)) {
             @unlink(storage_path(str_replace('storage/', 'app/public/', $model->img)));
             $path = request()->file('img')->store('public');
             $model->img = str_replace('public/', 'storage/', $path);

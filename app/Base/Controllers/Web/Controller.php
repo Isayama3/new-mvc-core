@@ -5,7 +5,7 @@ namespace App\Base\Controllers\Web;
 use App\Base\Services\SingletonAuthPermissions;
 use App\Base\Traits\Views\Path;
 use App\Base\Traits\Views\Variable;
-use Helper\Attachment;
+use App\Base\Helper\Attachment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Base\Traits\Model\FilterSort;
+use App\Base\Traits\Custom\AttachmentAttribute;
 
 class Controller extends \App\Http\Controllers\Controller
 {

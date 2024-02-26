@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Web;
 
 use App\Base\Rules\PasswordRule;
 use Illuminate\Http\Request;

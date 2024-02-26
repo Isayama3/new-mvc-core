@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\AuthController;
-use App\Http\Controllers\Admin\HomeController;
-use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\Web\AdminController;
+use App\Http\Controllers\Admin\Web\AuthController;
+use App\Http\Controllers\Admin\Web\HomeController;
+use App\Http\Controllers\Admin\Web\RoleController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth:admin']], function () {
