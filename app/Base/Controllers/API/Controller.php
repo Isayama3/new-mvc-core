@@ -125,7 +125,9 @@ class Controller extends LaraveController
         if (app()->runningInConsole()) {
             return true;
         }
+
         $token = \Laravel\Sanctum\PersonalAccessToken::findToken($this->bearerToken());
+
         if (!$token) {
             abort(response()->json([
                 'endpointName' => app('request')->route()?->getName(),
@@ -222,16 +224,11 @@ class Controller extends LaraveController
         }
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-
     public function indexExceptIds()
     {
         return [];
     }
+
     public function index()
     {
         $record = $this->model;
@@ -242,20 +239,16 @@ class Controller extends LaraveController
             $record = $this->model->where($this->queryItem)->latest();
         }
 
-        if (!empty($this->relations())) {
+        if (!empty($this->relations()))
             $record = $record->with(...$this->relations());
-        }
 
-        if (!empty($this->indexExceptIds())) {
+        if (!empty($this->indexExceptIds()))
             $record = $record->whereNotIn('id', $this->indexExceptIds());
-        }
 
         $record = $record->when($this->customWhen()['condition'], $this->customWhen()['callback']);
 
-
-        if ($this->cache) {
+        if ($this->cache)
             $record = $record->remember($this->cache_time)->cacheTags($this->model->getTableName());
-        }
 
         $record = $record->paginate($this->request->per_page ?? 10);
         return $this->sendResponse(
@@ -280,12 +273,6 @@ class Controller extends LaraveController
         return $this->sendResponse(SimpleResource::collection($record));
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function store()
     {
         if ($this->media) {
@@ -328,9 +315,8 @@ class Controller extends LaraveController
 
         $record->fresh();
 
-        if (!empty($this->relations())) {
+        if (!empty($this->relations()))
             $record = $record->load(...$this->relations());
-        }
 
         $this->model = $record;
         return $this->sendResponse(
@@ -341,12 +327,6 @@ class Controller extends LaraveController
         );
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function show($id)
     {
         if (!empty($this->relations())) {
@@ -358,12 +338,6 @@ class Controller extends LaraveController
         return $this->sendResponse(new $this->resource($record));
     }
 
-    /**
-     * Update a resource in storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function update($id)
     {
         $model = $this->model->findOrFail($id);
@@ -393,24 +367,15 @@ class Controller extends LaraveController
             $this->model->flushCache($this->model->getTableName() . '-list');
         }
 
-
-
         if (!empty($this->relations())) {
             $model = $model->load(...$this->relations());
         }
-        $this->model = $model;
 
+        $this->model = $model;
 
         return $this->sendResponse(new $this->resource($model), 'تم التعديل بنجاح');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Exception
-     */
     public function destroy($id)
     {
         if ($this->hasDelete) {
