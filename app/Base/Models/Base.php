@@ -7,7 +7,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\LogOptions;
 use App\Base\Traits\Model\Timestamp;
-use Watson\Rememberable\Rememberable;
 use App\Base\Traits\Model\FilterSort;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
@@ -22,23 +21,19 @@ use Illuminate\Support\Facades\Cache;
 
 class Base extends Model
 {
-    use HasFactory, Timestamp, FilterSort, LogsActivity, AttachmentAttribute, Rememberable, SendResponse;
+    use HasFactory, Timestamp, FilterSort, LogsActivity, AttachmentAttribute, SendResponse;
 
-
-    /**
-     * The attributes that aren't mass assignable.
-     *
-     * @var array
-     */
     protected $guarded = ['id', 'uuid', 'created_at', 'updated_at'];
     protected $hidden = [
         'password',
         'remember_token',
     ];
+
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:00',
         'updated_at' => 'datetime:Y-m-d H:00',
     ];
+
     protected function password(): Attribute
     {
         return Attribute::make(
@@ -51,11 +46,6 @@ class Base extends Model
         return LogOptions::defaults()->logAll();
     }
 
-    /**
-     * Create a new factory instance for the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
-     */
     protected static function newFactory()
     {
         $namespace = explode('\\', static::class);
@@ -78,12 +68,10 @@ class Base extends Model
     public function getMedia()
     {
         return DB::table('attachments')
-            ->whereRaw('attachmentable_type ~ ?', ['\\\\' . class_basename($this) . '$'])
+            ->where('attachmentable_type', 'REGEXP', '\\\\' . class_basename($this) . '$')
             ->where('attachmentable_id', $this->id)
             ->get();
     }
-
-
 
     public static function generate_unique_code($model, $col = 'code', $length = 4, $letters = true, $numbers = true, $symbols = true): string
     {
@@ -152,5 +140,32 @@ class Base extends Model
     public function deleteRelations(): array
     {
         return [];
+    }
+
+    public function getImageUrlAttribute(): string
+    {
+        if (app()->environment('local')) {
+            if (is_null($this->attributes['image']))
+                return asset("public/upload/blank.png");
+
+            return asset($this->attributes['image']);
+        }
+
+        if (is_null($this->attributes['image']))
+            return secure_asset("public/upload/blank.png");
+
+        return secure_asset($this->attributes['image']);
+    }
+    
+    public function getLocaleAttribute($columnName)
+    {
+        $locale = app()->getLocale();
+        $localizedColumn = "{$columnName}_{$locale}";
+
+        if (isset($this->$localizedColumn)) {
+            return $this->$localizedColumn;
+        }
+
+        return $this->$columnName;
     }
 }

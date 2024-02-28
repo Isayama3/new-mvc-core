@@ -10,16 +10,17 @@
                 <h4 class="card-title">Hoverable rows</h4>
             </div> --}}
                     <div class="card-content">
-                        <form class="form" method="POST" action="{{ route($update_route, $record->id) }}">
+                        <form class="form" method="POST" action="{{ route($update_route, $record->id) }}"
+                            enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             @yield('form')
                             <hr />
                             <div class="col-12 d-flex justify-content-start">
                                 <button type="submit"
-                                    class="btn btn-primary me-1 mb-1">{{ __('admin_panel.submit') }}</button>
+                                    class="btn btn-primary me-1 mb-1">{{ __('admin.submit') }}</button>
                                 <button type="reset"
-                                    class="btn btn-light-secondary me-1 mb-1">{{ __('admin_panel.reset') }}</button>
+                                    class="btn btn-light-secondary me-1 mb-1">{{ __('admin.reset') }}</button>
                             </div>
                         </form>
                     </div>

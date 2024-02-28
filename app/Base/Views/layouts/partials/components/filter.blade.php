@@ -6,12 +6,12 @@
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#filter"
                         aria-expanded="true" aria-controls="filter">
                         <i class="bi bi-arrow-down"></i>
-                        {{ __('admin_panel.search') }}
+                        {{ __('admin.search') }}
                     </button>
                     <a href="{{ route($create_route) }}">
                         <button href class="btn btn-primary float-end" type="button">
                             <i class="bi bi-plus-lg"></i>
-                            {{ __('admin_panel.add_new') }}
+                            {{ __('admin.add_new') }}
                         </button>
                     </a>
                 </div>
@@ -77,9 +77,9 @@
                                     </div> --}}
                                     <div class="col-12 d-flex justify-content-end">
                                         <button type="submit"
-                                            class="btn btn-primary me-1 mb-1">{{ __('admin_panel.submit') }}</button>
+                                            class="btn btn-primary me-1 mb-1">{{ __('admin.submit') }}</button>
                                         <button type="reset"
-                                            class="btn btn-light-secondary me-1 mb-1">{{ __('admin_panel.reset') }}</button>
+                                            class="btn btn-light-secondary me-1 mb-1">{{ __('admin.reset') }}</button>
                                     </div>
                                 </div>
                             </form>

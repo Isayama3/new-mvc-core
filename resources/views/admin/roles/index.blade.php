@@ -1,5 +1,5 @@
 @extends('admin.layouts.partials.crud-components.table', [
-    'page_header' => __('admin.create'),
+    'page_header' => __('admin.roles'),
 ])
 @section('filter')
     @include('admin.roles.filter', [
@@ -11,9 +11,9 @@
     <thead>
         <tr>
             <th>{{ __('#') }}</th>
-            <th>{{ __('admin_panel.name') }}</th>
-            <th>{{ __('admin_panel.permissions') }}</th>
-            <th>{{ __('admin_panel.actions') }}</th>
+            <th>{{ __('admin.name') }}</th>
+            <th>{{ __('admin.permissions') }}</th>
+            <th>{{ __('admin.actions') }}</th>
         </tr>
     </thead>
     <tbody>
@@ -31,7 +31,7 @@
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
                             <div class="modal-content">
                                 <div class="modal-header bg-info">
-                                    <h5 class="modal-title white" id="myModalLabel140">{{ __('admin.Permissions') }}</h5>
+                                    <h5 class="modal-title white" id="myModalLabel140">{{ __('admin.permissions') }}</h5>
                                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"

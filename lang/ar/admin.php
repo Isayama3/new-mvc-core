@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'Roles' => 'رتب المستخدمين',
-    'Permissions' => 'الصلاحيات',
+    'roles' => 'رتب المستخدمين',
+    'permissions' => 'الصلاحيات',
 ];

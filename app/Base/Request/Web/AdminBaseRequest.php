@@ -9,11 +9,6 @@ use Illuminate\Http\Request;
 
 class AdminBaseRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
         if (app()->runningInConsole()) {
@@ -21,6 +16,11 @@ class AdminBaseRequest extends FormRequest
         }
         return true;
         // return Auth::guard('admin')->check();
+    }
+
+    public function prepareForValidation()
+    {
+        $this->merge(['image' => $this->filepond]);
     }
 
     public function failedValidation(Validator $validator)

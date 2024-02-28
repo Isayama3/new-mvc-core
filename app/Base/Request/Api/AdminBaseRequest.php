@@ -22,8 +22,13 @@ class AdminBaseRequest extends FormRequest
 
     public function failedValidation(Validator $validator)
     {
+        $errors = [];
+        foreach ($validator->errors()->toArray() as $key => $error) {
+            $errors[$key] = $error[0];
+        }
+
         throw new HttpResponseException($this->ErrorValidate(
-            $validator->errors()->toArray(),
+            $errors
         ));
     }
 }

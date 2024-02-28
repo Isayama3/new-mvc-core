@@ -8,9 +8,9 @@
                             <thead>
                                 <tr>
                                     @foreach ($columns as $key => $value)
-                                        <th>{{ __('admin_panel.' . $key) }}</th>
+                                        <th>{{ __('admin.' . $key) }}</th>
                                     @endforeach
-                                    <th>{{ __('admin_panel.actions') }}</th>
+                                    <th>{{ __('admin.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>

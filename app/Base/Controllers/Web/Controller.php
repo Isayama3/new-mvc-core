@@ -150,7 +150,6 @@ class Controller extends \App\Http\Controllers\Controller
         return view($this->view_path . __FUNCTION__, compact('records', 'permissions', 'create_route', 'edit_route', 'destroy_route'));
     }
 
-
     public function create()
     {
         $store_route = str_replace('create', 'store', Request::route()->getName());
@@ -160,7 +159,7 @@ class Controller extends \App\Http\Controllers\Controller
     public function store()
     {
         if ($this->media) {
-            $validator = Validator::make(request()->all(), [
+            $validator = Validator::make($this->request->all(), [
                 'media' => 'required|array',
                 'media.*' => 'mimes:jpg,png,jpeg,gif,svg,pdf|max:4000',
             ]);
@@ -177,23 +176,23 @@ class Controller extends \App\Http\Controllers\Controller
             $this->model->flushCache($this->model->getTableName() . '-list');
         }
 
-        $record = $this->model->create($this->request->validated());
+        $record = $this->model->create(Arr::except($this->request->validated(), 'image'));
 
-        if (!empty(request()->media)) {
+        if (!empty($this->request->media)) {
             $options = [
                 "usage" => ((new \ReflectionClass($this->model))->getShortName()),
             ];
 
-            foreach (request()->media as $image) {
+            foreach ($this->request->media as $image) {
                 if ($image) {
                     Attachment::addAttachment($image, $record, 'upload/' . ((new \ReflectionClass($this->model))->getShortName()), $options);
                 }
             }
         }
 
-        if (request()->has('img')) {
-            $path = request()->file('img')->store('public');
-            $record->img = str_replace('public/', 'storage/', $path);
+        if ($this->request->has('image') && !is_null($this->request->image)) {
+            $path = $this->request->image->store('public');
+            $record->image = str_replace('public/', 'storage/', $path);
             $record->save();
         }
 
@@ -226,24 +225,24 @@ class Controller extends \App\Http\Controllers\Controller
     public function update($id)
     {
         $model = $this->model->findOrFail($id);
-        $model->update(Arr::except($this->request->validated(), 'img'));
+        $model->update(Arr::except($this->request->validated(), 'image'));
 
-        if (!empty(request()->media)) {
+        if (!empty($this->request->media)) {
             $options = [
                 "usage" => ((new \ReflectionClass($model))->getShortName()),
             ];
 
-            foreach (request()->media as $image) {
+            foreach ($this->request->media as $image) {
                 if ($image) {
                     Attachment::addAttachment($image, $model, 'upload/' . ((new \ReflectionClass($model))->getShortName()), $options);
                 }
             }
         }
 
-        if (request()->has('img')) {
-            @unlink(storage_path(str_replace('storage/', 'app/public/', $model->img)));
-            $path = request()->file('img')->store('public');
-            $model->img = str_replace('public/', 'storage/', $path);
+        if ($this->request->has('image') && !is_null($this->request->image)) {
+            @unlink(storage_path(str_replace('storage/', 'app/public/', $model->image)));
+            $path = $this->request->image->store('public');
+            $model->image = str_replace('public/', 'storage/', $path);
             $model->save();
         }
 
@@ -275,8 +274,8 @@ class Controller extends \App\Http\Controllers\Controller
                     ]);
             }
 
-            if ($model->img) {
-                @unlink(storage_path(str_replace('storage/', 'app/public/', $model->img)));
+            if ($model->image) {
+                @unlink(storage_path(str_replace('storage/', 'app/public/', $model->image)));
             }
 
             if (in_array(AttachmentAttribute::class, class_uses_recursive($this->model))) {

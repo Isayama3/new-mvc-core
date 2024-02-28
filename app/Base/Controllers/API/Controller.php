@@ -69,7 +69,7 @@ class Controller extends LaraveController
         $queryItem = [],
         $hasDelete = false,
         $media = false,
-        $cache = true,
+        $cache = false,
         $cache_time = 60 * 1,
         $permissions = false,
         $multiAuth = false
@@ -269,14 +269,20 @@ class Controller extends LaraveController
         if (!empty($this->indexExceptIds())) {
             $record = $record->whereNotIn('id', $this->indexExceptIds());
         }
-        $record = $record->take(3000)->remember($this->cache_time)->cacheTags($this->model->getTableName() . '-list')->get(['id', 'name']);
+
+        if ($this->cache) {
+            $record = $record->take(3000)->remember($this->cache_time)->cacheTags($this->model->getTableName() . '-list')->get(['id', 'name']);
+        } else {
+            $record = $record->take(3000)->get(['id', 'name']);
+        }
+
         return $this->sendResponse(SimpleResource::collection($record));
     }
 
     public function store()
     {
         if ($this->media) {
-            $validator = Validator::make(request()->all(), [
+            $validator = Validator::make($this->request->all(), [
                 'media' => 'required|array',
                 'media.*' => 'mimes:jpg,png,jpeg,gif,svg,pdf|max:4000',
             ]);
@@ -293,23 +299,23 @@ class Controller extends LaraveController
             $this->model->flushCache($this->model->getTableName() . '-list');
         }
 
-        $record = $this->model->create(Arr::except($this->request->validated(), 'img'));
+        $record = $this->model->create(Arr::except($this->request->validated(), 'image'));
 
-        if (!empty(request()->media)) {
+        if (!empty($this->request->media)) {
             $options = [
                 "usage" => ((new \ReflectionClass($this->model))->getShortName()),
             ];
 
-            foreach (request()->media as $image) {
+            foreach ($this->request->media as $image) {
                 if ($image) {
                     Attachment::addAttachment($image, $record, 'upload/' . ((new \ReflectionClass($this->model))->getShortName()), $options);
                 }
             }
         }
 
-        if (request()->has('img') && !is_null(request()->img)) {
-            $path = request()->file('img')->store('public');
-            $record->img = str_replace('public/', 'storage/', $path);
+        if ($this->request->has('image') && !is_null($this->request->image)) {
+            $path = $this->request->file('image')->store('public');
+            $record->image = str_replace('public/', 'storage/', $path);
             $record->save();
         }
 
@@ -341,24 +347,25 @@ class Controller extends LaraveController
     public function update($id)
     {
         $model = $this->model->findOrFail($id);
-        $model->update(Arr::except($this->request->validated(), 'img'));
+        $model->update(Arr::except($this->request->validated(), 'image'));
 
 
-        if (!empty(request()->media)) {
+        if (!empty($this->request->media)) {
             $options = [
                 "usage" => ((new \ReflectionClass($model))->getShortName()),
             ];
 
-            foreach (request()->media as $image) {
+            foreach ($this->request->media as $image) {
                 if ($image) {
                     Attachment::addAttachment($image, $model, 'upload/' . ((new \ReflectionClass($model))->getShortName()), $options);
                 }
             }
         }
-        if (request()->has('img') && !is_null(request()->img)) {
-            @unlink(storage_path(str_replace('storage/', 'app/public/', $model->img)));
-            $path = request()->file('img')->store('public');
-            $model->img = str_replace('public/', 'storage/', $path);
+
+        if ($this->request->has('image') && !is_null($this->request->image)) {
+            @unlink(storage_path(str_replace('storage/', 'app/public/', $model->image)));
+            $path = $this->request->file('image')->store('public');
+            $model->image = str_replace('public/', 'storage/', $path);
             $model->save();
         }
 
@@ -385,8 +392,8 @@ class Controller extends LaraveController
                 if ($model->$key()->count() > 0)
                     return $this->ErrorMessage(' غير مسموح بالحذف لوجود بيانات مرتبطة');
             }
-            if ($model->img) {
-                @unlink(storage_path(str_replace('storage/', 'app/public/', $model->img)));
+            if ($model->image) {
+                @unlink(storage_path(str_replace('storage/', 'app/public/', $model->image)));
             }
 
             if (in_array(AttachmentAttribute::class, class_uses_recursive($this->model))) {
@@ -407,15 +414,23 @@ class Controller extends LaraveController
     public function excelExport()
     {
         $record = $this->model;
+
         if (in_array(FilterSort::class, class_uses_recursive($this->model))) {
             $record = $record->setFilters()->defaultSort('-created_at');
         } else {
             $record = $this->model->where($this->queryItem)->latest();
         }
+
         if (!empty($this->relations())) {
             $record = $record->with(...$this->relations());
         }
-        $record = $record->take(3000)->remember($this->cache_time)->cacheTags($this->model->getTableName() . '-export')->get();
+
+        if ($this->cache) {
+            $record = $record->take(3000)->remember($this->cache_time)->cacheTags($this->model->getTableName() . '-export')->get();
+        } else {
+            $record = $record->take(3000)->get();
+        }
+
         $collection =  $this->resource::collection($record);
         return (new PublicExport($collection))->download($this->model->getTableName() . '.xlsx');
     }

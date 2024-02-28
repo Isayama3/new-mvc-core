@@ -2,7 +2,7 @@
 
 namespace App\Base\Traits\Custom;
 
-use Core\Attachment\Models\Attachment;
+use App\Models\Attachment;
 
 trait AttachmentAttribute
 {

@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Admin\Permission;
+use App\Models\Permission;
 use Illuminate\Support\Facades\Route;
 
 function resourcePermissions($group, $unit, $route, $ignore = [])

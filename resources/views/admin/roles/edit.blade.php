@@ -11,7 +11,7 @@
     {{ \App\Base\Helper\Field::text(name: 'description', label: 'description', required: 'false', placeholder: 'description') }}
 
     @foreach ($permissions as $permission)
-        <label class="mb-1" for="{{ __('admin_panel.permissions') }}">{{ __('admin_panel.permissions') }}</label>
+        <label class="mb-1" for="{{ __('admin.permissions') }}">{{ __('admin.permissions') }}</label>
         <label>{{ __($permission->group) }}</label>
         <input type="checkbox" class="selectSameGroup form-check-input"
             id="{{ str_replace(' ', '_', __($permission->group)) }}">
@@ -21,7 +21,7 @@
             @foreach ($permissionModel->where('group', $permission->group)->get() as $key => $value)
                 <div class="form-group col-md-3" id="permissions_wrap" style="display: flex; margin: 0px 4px;">
                     <div class="form-group {{ $errors->has('permissions') ? 'has-error' : '' }}"
-                        id="{{ __('admin_panel.permissions') }}_wrap">
+                        id="{{ __('admin.permissions') }}_wrap">
                         <div class="form-check">
                             <label for="{{ $value->id }}">{{ Str::limit($value->name, 25) }}</label>
                             <input type="checkbox" id="{{ $value->id }}"

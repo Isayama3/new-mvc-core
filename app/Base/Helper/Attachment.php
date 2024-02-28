@@ -3,10 +3,8 @@
 
 namespace App\Base\Helper;
 
-use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
-use Mockery\Exception;
 
 class Attachment
 {
@@ -60,7 +58,6 @@ class Attachment
     {
 
         $destinationPath = public_path() . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR;
-        // $destinationPath = public_path() . '/uploads/thumbnails/' . $folder_name . '/';
         $extension = $image->getClientOriginalExtension(); // getting image extension
         $name = 'original_' . time() . '' . rand(11111, 99999) . '.' . $extension; // renaming image
         $usage = self::inArray('usage', $options, null);
@@ -80,6 +77,7 @@ class Attachment
             );
             return;
         }
+
         if ($extension == 'svg') {
             $model->$relation()->create(
                 [
@@ -133,13 +131,13 @@ class Attachment
      */
     public static function updateAttachment($file, $oldFiles, $model, $folder_name, array $options = []): void
     {
-        // dd(\func_get_args());
         if ($oldFiles) {
             File::delete(public_path() . '/' . $oldFiles->original);
             File::delete(public_path() . '/' . $oldFiles->photo_400);
             File::delete(public_path() . '/' . $oldFiles->photo_600);
             File::delete(public_path() . '/' . $oldFiles->photo_800);
         }
+
         $image = $file;
         $destinationPath = public_path() . '/uploads/thumbnails/' . $folder_name . '/';
         $extension = $image->getClientOriginalExtension(); // getting image extension
@@ -148,7 +146,6 @@ class Attachment
         $type = self::inArray('type', $options, 'image');
         $relation = self::inArray('relation', $options, 'attachmentRelation');
         $image->move($destinationPath, $name); // uploading file to given
-
 
         $image_400 = '400-' . time() . '' . rand(11111, 99999) . '.' . $extension;
         $image_600 = '600-' . time() . '' . rand(11111, 99999) . '.' . $extension;
@@ -196,7 +193,6 @@ class Attachment
      */
     public static function deleteAttachment($model, $relation = 'attachmentRelation', $multiple = false, $type = 'image')
     {
-
         $photos = $model->$relation;
 
         if ($multiple == true) {
@@ -221,38 +217,4 @@ class Attachment
 
         $model->$relation()->where('type', $type)->delete();
     }
-
-    /**
-     * @param $code
-     * @param $model
-     * @param array $options
-     */
-    /*     public static function setQrCode($code, $model, array $options = []):void
-    {
-        $relation = self::inArray('relation', $options, 'attachmentRelation');
-        $usage = self::inArray('usage', $options, 'qr-code');
-        $type = self::inArray('type', $options, 'image');
-        $size = self::inArray('size', $options, 4); //pixel size in 1 to 10
-        $margin = self::inArray('size', $options, 4); // in 1 to 10
-        $extension = self::inArray('ext', $options, 'png'); // in 1 to 10
-
-        $folder_name = 'qr-codes/' . Carbon::now()->toDateString();
-        $name = $size . '-' . time() . '' . rand(11111, 99999) . '.' . $extension;
-
-        $destinationPath = public_path() . '/uploads/thumbnails/' . $folder_name . '/';
-
-        if (!file_exists($destinationPath)) {
-            mkdir($destinationPath, 0755);
-        }
-
-        \QRCode::text($code)->setSize($size)->setMargin($margin)->setOutfile($destinationPath . $name)->$extension();
-
-        $model->$relation()->create(
-            [
-                'path' => 'uploads/thumbnails/' . $folder_name . '/' . $name,
-                'type' => $type,
-                'usage' => $usage
-            ]
-        );
-    } */
 }

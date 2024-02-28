@@ -1,5 +1,5 @@
 @extends('admin.layouts.partials.crud-components.table', [
-    'page_header' => __('admin.create'),
+    'page_header' => __('admin.admins'),
 ])
 
 @section('filter')
@@ -12,11 +12,11 @@
     <thead>
         <tr>
             <th>{{ __('#') }}</th>
-            <th>{{ __('admin_panel.name') }}</th>
-            <th>{{ __('admin_panel.email') }}</th>
-            <th>{{ __('admin_panel.phone') }}</th>
-            <th>{{ __('admin_panel.status') }}</th>
-            <th>{{ __('admin_panel.actions') }}</th>
+            <th>{{ __('admin.name') }}</th>
+            <th>{{ __('admin.email') }}</th>
+            <th>{{ __('admin.phone') }}</th>
+            <th>{{ __('admin.status') }}</th>
+            <th>{{ __('admin.actions') }}</th>
         </tr>
     </thead>
     <tbody>
@@ -33,7 +33,7 @@
                     url: route('admin.admins.toggleBoolean', ['id' => $record->id, 'action' => 'status']),
                 ) !!}
                 </td>
-                <td style="display: flex;gap: 12px;">
+                <td style="display: flex;gap: 12px; justify-content: center;">
                     <a href="{{ route($edit_route, $record->id) }}">
                         <button href class="btn btn-success float-start" type="button">
                             <i class="bi bi-pencil-square"></i>

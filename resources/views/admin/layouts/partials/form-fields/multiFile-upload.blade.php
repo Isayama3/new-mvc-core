@@ -5,8 +5,8 @@
     <link rel="stylesheet" href={{ asset('dashboard/extensions/toastify-js/src/toastify.css') }}>
 @endpush
 
-<div class="form-group {{ $errors->has($name) ? 'has-error' : '' }}" id="{{ __('admin_panel.' . $name) }}_wrap">
-    <label class="mb-1" for="{{ $name }}">{{ __('admin_panel.' . $label) }}</label>
+<div class="form-group {{ $errors->has($name) ? 'has-error' : '' }}" id="{{ __('admin.' . $name) }}_wrap">
+    <label class="mb-1" for="{{ $name }}">{{ __('admin.' . $label) }}</label>
     <div class="filepond--root multiple-files-filepond filepond--hopper" data-style-button-remove-item-position="left"
         data-style-button-process-item-position="right" data-style-load-indicator-position="right"
         data-style-progress-indicator-position="right" data-style-button-remove-item-align="false"

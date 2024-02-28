@@ -115,7 +115,7 @@ class Field
      */
     public static function select($name, $label, $options, $selected = null, $required = 'true', $placeholder = null)
     {
-        $placeholder = __('admin_panel.choose');
+        $placeholder = __('admin.choose');
         return view('admin.layouts.partials.form-fields.select', compact('name', 'label', 'options', 'selected', 'placeholder', 'required', 'placeholder'));
     }
 
@@ -155,10 +155,9 @@ class Field
      * @param $label
      * @return string
      */
-    public static function fileWithPreview($name, $label, $multiFile = false, $required = 'true', $placeholder = null)
+    public static function fileWithPreview($name, $label, $multiFile = false, $required = 'true', $placeholder = null, $path = null)
     {
-
-        return view('admin.layouts.partials.form-fields.file-with-preview', compact('name', 'label', 'multiFile', 'required', 'placeholder'));
+        return view('admin.layouts.partials.form-fields.file-with-preview', compact('name', 'label', 'multiFile', 'required', 'placeholder', 'path'));
     }
 
 

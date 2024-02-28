@@ -4,15 +4,6 @@ namespace App\Base\Traits\Response;
 
 trait SendResponse
 {
-    /**
-     * send the response
-     *
-     * @param object $result
-     * @param string $message
-     * @param bool $is_success
-     * @param int $status_code
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function sendResponse($result, $message = 'Success.', $is_success = true, $status_code = 200, $withmeta = false, $permissions = false, $actions = [], $columns = [], $filter = [])
     {
 
@@ -41,29 +32,19 @@ trait SendResponse
             $response['actions'] = $actions;
             $response['filter'] = $filter;
         }
+
         $response[$result_key] = $result;
-
-
-
 
         if (($withmeta)) $response["pages"] = ceil($response["total"] / $response["per_page"]);
 
         return response()->json($response, $status_code);
     }
 
-
     public function easyResponse($result = [], $status = 200)
     {
         return response()->json($result, $status);
     }
 
-    /**
-     * send the exception response
-     *
-     * @param \Exception $e
-     * @param bool $report
-     * @return \Illuminate\Http\JsonResponse
-     */
     protected function sendExceptionResponse($e, $report = true)
     {
         if ($report) {
@@ -75,7 +56,7 @@ trait SendResponse
         return $this->sendResponse([], $message, false, 500);
     }
 
-    public function ErrorMessage($msg)
+    public function ErrorMessage($msg = null)
     {
         $response = [
             'endpointName' => app()->runningInConsole() ? null : app('request')->route()->getName(),
@@ -86,8 +67,10 @@ trait SendResponse
                 'msg' => $msg
             ],
         ];
+
         return response()->json($response, 422);
     }
+
     public function ErrorValidate($errors)
     {
         $response = [
@@ -98,8 +81,10 @@ trait SendResponse
             'errors' => $errors
 
         ];
+
         return response()->json($response, 422);
     }
+
     public function SuccessMessage($msg = '')
     {
         $response = [
@@ -111,18 +96,20 @@ trait SendResponse
                 'msg' => $msg
             ],
         ];
+
         return response()->json($response, 200);
     }
 
-    public function shortSuccess($data, $msg = null)
+    public function shortSuccess($msg = null, $data = [])
     {
         $response = [
             'endpointName' => app()->runningInConsole() ? null : app('request')->route()->getName(),
             'is_success' => true,
             'status_code' => 200,
-            'message' =>  $msg ?? 'تم',
+            'message' =>  $msg ?? '',
             'data' => $data
         ];
+
         return response()->json($response, 200);
     }
 }

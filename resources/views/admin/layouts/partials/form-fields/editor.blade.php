@@ -1,10 +1,10 @@
-<div class="form-group {{ $errors->has($name) ? 'has-error' : '' }}" id="{{ __('admin_panel.' . $name) }}_wrap">
-    <label for="{{ $name }}">{{ __('admin_panel.' . $label) }}</label>
+<div class="form-group {{ $errors->has($name) ? 'has-error' : '' }}" id="{{ __('admin.' . $name) }}_wrap">
+    <label for="{{ $name }}">{{ __('admin.' . $label) }}</label>
     <div class="">
         {!! Form::textarea($name, $value, [
             'class' => 'form-control ' . $plugin,
             'id' => $name,
-            'placeholder' => $placeholder ? __('admin_panel.' . $placeholder) : __('admin_panel.' . $label),
+            'placeholder' => $placeholder ? __('admin.' . $placeholder) : __('admin.' . $label),
             'rows' => 10,
         ]) !!}
     </div>

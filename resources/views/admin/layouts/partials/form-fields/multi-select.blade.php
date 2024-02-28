@@ -1,8 +1,8 @@
-<div class="form-group {{ $errors->has($name) ? 'has-error' : '' }}" id="{{ __('admin_panel.' . $name) }}_wrap">
-    <label for="{{ $name }}">{{ __('admin_panel.' . $label) }}</label>
+<div class="form-group {{ $errors->has($name) ? 'has-error' : '' }}" id="{{ __('admin.' . $name) }}_wrap">
+    <label for="{{ $name }}">{{ __('admin.' . $label) }}</label>
     <div class="">
         {!! Form::select($name . '[]', $options, $selected, [
-            'data-placeholder' => $placeholder ? __('admin_panel.' . $placeholder) : __('admin_panel.' . $label),
+            'data-placeholder' => $placeholder ? __('admin.' . $placeholder) : __('admin.' . $label),
             'class' => 'form-control ' . $plugin,
             'multiple' => 'multiple',
             'id' => $name,
@@ -14,7 +14,7 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            $('#{{ __('admin_panel.' . $name) }}').select2();
+            $('#{{ __('admin.' . $name) }}').select2();
         });
     </script>
 @endpush
