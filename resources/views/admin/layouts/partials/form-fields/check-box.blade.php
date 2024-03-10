@@ -6,7 +6,8 @@
                 <div class="col-md-3">
                     <label for="{{ $key }}">{{ Str::limit($value, 25) }}</label>
                     <input type="checkbox" id="{{ $key }}" class="form-check-input" checked=""
-                        value="{{ $key }}" name="{{ $name }}[]">
+                        value="{{ $key }}" name="{{ $name }}[]"
+                        {{ $disabled == true ? 'disabled' : '' }}>
                 </div>
             @endforeach
         </div>

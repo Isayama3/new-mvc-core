@@ -4,11 +4,11 @@
             {{-- Previous Page Link --}}
             @if ($paginator->onFirstPage())
                 <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">{{__('admin_panel.previous')}}</a>
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">{{__('admin.previous')}}</a>
                 </li>
             @else
                 <li class="page-item">
-                    <a class="page-link" href="{{ $paginator->previousPageUrl() }}" rel="prev">{{__('admin_panel.previous')}}</a>
+                    <a class="page-link" href="{{ $paginator->previousPageUrl() }}" rel="prev">{{__('admin.previous')}}</a>
                 </li>
             @endif
 
@@ -38,11 +38,11 @@
             {{-- Next Page Link --}}
             @if ($paginator->hasMorePages())
                 <li class="page-item">
-                    <a class="page-link" href="{{ $paginator->nextPageUrl() }}" rel="next">{{__('admin_panel.next')}}</a>
+                    <a class="page-link" href="{{ $paginator->nextPageUrl() }}" rel="next">{{__('admin.next')}}</a>
                 </li>
             @else
                 <li class="page-item disabled">
-                    <span class="page-link" aria-disabled="true">{{__('admin_panel.next')}}</span>
+                    <span class="page-link" aria-disabled="true">{{__('admin.next')}}</span>
                 </li>
             @endif
         </ul>

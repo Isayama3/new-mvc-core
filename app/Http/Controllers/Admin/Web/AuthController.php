@@ -31,7 +31,8 @@ class AuthController
             'password' => $request->input('password'),
         ];
 
-        if (Auth::guard('admin')->attempt($credentials)) {
+        $remember = $request->input('remember') && $request->remember == 1 ? $request->remember : 0;
+        if (Auth::guard('admin')->attempt($credentials, $remember)) {
             return redirect(route('admin.home'));
         }
 
@@ -41,10 +42,16 @@ class AuthController
     public function logout(Request $request)
     {
         Auth::guard('admin')->logout();
+    
+        // Clear the remember me token cookie
+        $request->session()->forget(Auth::guard('admin')->getRecallerName());
+    
         $request->session()->invalidate();
         $request->session()->regenerate();
+        
         return redirect(route('admin.login.form'));
     }
+    
 
     public function updateProfileView()
     {

@@ -26,7 +26,7 @@ class ClientBaseRequest extends FormRequest
         foreach ($validator->errors()->toArray() as $key => $error) {
             $errors[$key] = $error[0];
         }
-        
+
         throw new HttpResponseException($this->ErrorValidate(
             $errors
         ));

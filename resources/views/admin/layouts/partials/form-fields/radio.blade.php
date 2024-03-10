@@ -8,8 +8,7 @@
                         <input type="radio" id="{{ $key }}" class="form-check-input"
                             {{ $checked == $key ? 'checked' : '' }} value="{{ $key }}"
                             name="{{ $name }}">
-                        <label for="{{ $key }}"
-                            for="{{ $key }}">{{ __('admin.' . $value) }}</label>
+                        <label for="{{ $key }}" for="{{ $key }}">{{ __('admin.' . $value) }}</label>
                     </div>
                     <span class="help-block"><strong
                             id="{{ $name }}_error">{{ $errors->first($name) }}</strong></span>

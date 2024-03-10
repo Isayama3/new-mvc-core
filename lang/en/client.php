@@ -16,4 +16,23 @@ return [
     "otp_is_not_registered." => "OTP is not registered.",
     "password_updated_successfully" => "Password updated successfully.",
     "password_changed_successfully" => "Password changed successfully.",
+    'product_not_found' => 'Product not found.',
+    'successfully_added' => 'Successfully Added',
+    'successfully_updated' => 'Successfully Updated',
+    "successfully_deleted" => 'Successfully Deleted',
+    'delete_is_not_allowed' => "Delete is not allowed",
+    "delete_is_not_allowed_due_to_related_records" => "Delete is not allowed due to related records",
+    "cart_is_empty" => 'Cart Is Empty',
+    'in-review' => 'In Review',
+    'confirmed' => 'Confirmed',
+    'delivery-in-progress' => 'Delivery In Progress',
+    'delivered' => 'Delivered',
+    'canceled' => 'Canceled',
+    'order-placed' => 'Order Placed',
+    'booking-placed' => 'Booking Placed',
+    'expert-on-the-way' => 'Expert on the way',
+    'reached-at-location' => 'Expert at location',
+    'expert-going-to-start-work' => 'Expert going to work',
+    'completed' => 'Completed'
+
 ];

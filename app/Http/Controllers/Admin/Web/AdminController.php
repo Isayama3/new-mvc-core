@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Web;
 
 use App\Base\Controllers\Web\Controller;
-use App\Models\Admin\Admin as Model;
+use App\Models\Admin as Model;
 use App\Http\Requests\Admin\Web\AdminRequest as FormRequest;
 
 class AdminController extends Controller

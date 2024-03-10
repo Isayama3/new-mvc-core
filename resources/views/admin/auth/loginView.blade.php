@@ -24,17 +24,16 @@
             <div class="col-lg-5 col-12">
                 <div id="auth-left">
                     <div class="auth-logo">
-                        <a href="index.html"><img src="{{ asset('dashboard/compiled/svg/logo.svg') }}"
-                                alt="Logo"></a>
+                        <a href="#"><img src="{{ asset('dashboard/compiled/svg/logo.svg') }}" alt="Logo"></a>
                     </div>
-                    <h1 class="auth-title">Log in.</h1>
-                    <p class="auth-subtitle mb-5">Log in with your data that you entered during registration.</p>
+                    <h1 class="auth-title">{{ __('admin.login') }}</h1>
+                    <p class="auth-subtitle mb-5"></p>
 
                     <form action="{{ route('admin.login.post') }}" method="POST">
                         {{ csrf_field() }}
                         <div class="form-group position-relative has-icon-left mb-4">
                             <input name="email" type="text" class="form-control form-control-xl"
-                                placeholder="Username">
+                                placeholder="{{ __('admin.email') }}">
                             <div class="form-control-icon">
                                 <i class="bi bi-person"></i>
                             </div>
@@ -45,7 +44,7 @@
 
                         <div class="form-group position-relative has-icon-left mb-4">
                             <input name="password" type="password" class="form-control form-control-xl"
-                                placeholder="Password">
+                                placeholder="{{ __('admin.password') }}">
                             <div class="form-control-icon">
                                 <i class="bi bi-shield-lock"></i>
                             </div>
@@ -54,12 +53,13 @@
                             @enderror
                         </div>
                         <div class="form-check form-check-lg d-flex align-items-end">
-                            <input class="form-check-input me-2" type="checkbox" value="" id="flexCheckDefault">
+                            <input class="form-check-input me-2" type="checkbox" name="remember" value="" id="flexCheckDefault">
                             <label class="form-check-label text-gray-600" for="flexCheckDefault">
-                                Keep me logged in
+                                {{ __('admin.keep_me_login') }}
                             </label>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block btn-lg shadow-lg mt-5">Log in</button>
+                        <button type="submit"
+                            class="btn btn-primary btn-block btn-lg shadow-lg mt-5">{{ __('admin.login') }}</button>
                     </form>
                     <div class="text-center mt-5 text-lg fs-4">
                         {{-- <p class="text-gray-600">Don't have an account? <a href="auth-register.html"
@@ -71,7 +71,7 @@
             </div>
             <div class="col-lg-7 d-none d-lg-block">
                 <div id="auth-right">
-
+                    {{-- <img src="{{ asset('dashboard/compiled/svg/logo.svg') }}" alt="Logo"> --}}
                 </div>
             </div>
         </div>

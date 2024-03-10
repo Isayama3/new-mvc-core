@@ -6,7 +6,7 @@ use App\Base\Helper\Attachment;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Base\Exports\PublicExport;
-use App\Http\Controllers\Controller as LaraveController;
+use App\Http\Controllers\Controller as LaravelController;
 use Closure;
 use App\Base\Traits\Model\FilterSort;
 use App\Base\Resources\SimpleResource;
@@ -18,7 +18,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use App\Base\Services\SingletonAuthPermissions;
 use App\Base\Traits\Custom\AttachmentAttribute;
 
-class Controller extends LaraveController
+class Controller extends LaravelController
 {
     use SendResponse;
     use SendRequest;
@@ -239,8 +239,9 @@ class Controller extends LaraveController
             $record = $this->model->where($this->queryItem)->latest();
         }
 
-        if (!empty($this->relations()))
+        if (!empty($this->relations())) {
             $record = $record->with(...$this->relations());
+        }
 
         if (!empty($this->indexExceptIds()))
             $record = $record->whereNotIn('id', $this->indexExceptIds());
@@ -251,6 +252,7 @@ class Controller extends LaraveController
             $record = $record->remember($this->cache_time)->cacheTags($this->model->getTableName());
 
         $record = $record->paginate($this->request->per_page ?? 10);
+
         return $this->sendResponse(
             $this->resource::collection($record),
             withmeta: true,
@@ -299,7 +301,7 @@ class Controller extends LaraveController
             $this->model->flushCache($this->model->getTableName() . '-list');
         }
 
-        $record = $this->model->create(Arr::except($this->request->validated(), 'image'));
+        $record = $this->model->create(Arr::except($this->request->validated(), ['image', 'media']));
 
         if (!empty($this->request->media)) {
             $options = [
@@ -327,7 +329,7 @@ class Controller extends LaraveController
         $this->model = $record;
         return $this->sendResponse(
             new $this->resource($record),
-            'تم الاضافة بنجاح',
+            __('client.successfully_added'),
             true,
             201
         );
@@ -347,13 +349,17 @@ class Controller extends LaraveController
     public function update($id)
     {
         $model = $this->model->findOrFail($id);
-        $model->update(Arr::except($this->request->validated(), 'image'));
+        $model->update(Arr::except($this->request->validated(), ['image', 'media']));
 
 
         if (!empty($this->request->media)) {
             $options = [
                 "usage" => ((new \ReflectionClass($model))->getShortName()),
             ];
+
+            if (in_array(AttachmentAttribute::class, class_uses_recursive($this->model))) {
+                Attachment::deleteAttachment($model, multiple: true);
+            }
 
             foreach ($this->request->media as $image) {
                 if ($image) {
@@ -380,7 +386,7 @@ class Controller extends LaraveController
 
         $this->model = $model;
 
-        return $this->sendResponse(new $this->resource($model), 'تم التعديل بنجاح');
+        return $this->sendResponse(new $this->resource($model), __('client.successfully_updated'));
     }
 
     public function destroy($id)
@@ -390,8 +396,9 @@ class Controller extends LaraveController
 
             foreach ($this->model->deleteRelations() as $key) {
                 if ($model->$key()->count() > 0)
-                    return $this->ErrorMessage(' غير مسموح بالحذف لوجود بيانات مرتبطة');
+                    return $this->ErrorMessage(__('admin.delete_is_not_allowed_due_to_related_records'));
             }
+
             if ($model->image) {
                 @unlink(storage_path(str_replace('storage/', 'app/public/', $model->image)));
             }
@@ -405,9 +412,9 @@ class Controller extends LaraveController
                 $this->model->flushCache($this->model->getTableName());
                 $this->model->flushCache($this->model->getTableName() . '-list');
             }
-            return $this->SuccessMessage('تم الحذف بنجاح');
+            return $this->SuccessMessage(__('client.successfully_deleted'));
         } else {
-            return $this->ErrorMessage('غير مسموح بالحذف');
+            return $this->ErrorMessage(__('client.delete_is_not_allowed'));
         }
     }
 

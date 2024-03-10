@@ -1,20 +1,10 @@
-<div class="form-group {{ $errors->has($name) ? 'has-error' : '' }}" id="{{ __('admin.' . $name) }}_wrap">
-    <label for="{{ $name }}">{{ __('admin.' . $label) }}</label>
-    <div class="">
-        {!! Form::select($name . '[]', $options, $selected, [
-            'data-placeholder' => $placeholder ? __('admin.' . $placeholder) : __('admin.' . $label),
-            'class' => 'form-control ' . $plugin,
-            'multiple' => 'multiple',
-            'id' => $name,
-        ]) !!}
-    </div>
+<div class="form-group {{ $errors->has($name) ? 'is-invalid' : '' }}">
+    <label class="mb-1" for="{{ $name }}">{{ $label }}</label>
+    <select class="choices form-select multiple-remove" multiple="multiple">
+        @foreach ($options ?? [] as $key => $value)
+            <option value="{{ $key }}">{{ $value }}</option>
+        @endforeach
+    </select>
     <span class="help-block"><strong id="{{ $name }}_error">{{ $errors->first($name) }}</strong></span>
-</div>
 
-@push('scripts')
-    <script>
-        $(document).ready(function() {
-            $('#{{ __('admin.' . $name) }}').select2();
-        });
-    </script>
-@endpush
+</div>

@@ -71,6 +71,7 @@ class Base extends Model
             ->where('attachmentable_type', 'REGEXP', '\\\\' . class_basename($this) . '$')
             ->where('attachmentable_id', $this->id)
             ->get();
+            
     }
 
     public static function generate_unique_code($model, $col = 'code', $length = 4, $letters = true, $numbers = true, $symbols = true): string

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Web;
 
 use App\Base\Controllers\Web\Controller;
-use App\Models\Admin\Role as Model;
+use App\Models\Role as Model;
 use App\Http\Requests\Admin\Web\RoleRequest as FormRequest;
 use Illuminate\Support\Facades\Request;
 

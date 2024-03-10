@@ -19,4 +19,11 @@ trait EnumCustom
 
         return $enumValue;
     }
+
+    public static function keysAndValues(): array
+    {
+        $cases = self::cases();
+        $values = array_column($cases, 'value');
+        return array_combine($values, $values);
+    }
 }

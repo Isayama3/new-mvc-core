@@ -27,7 +27,11 @@ class Authenticate extends Middleware
             if (Arr::first($this->guards) === 'admin')
                 return route('admin.login.form');
 
-            return route('front.login');
+            abort(response()->json([
+                'is_success' => false,
+                'status_code' => 401,
+                'message' => "Unauthenticated, please login first",
+            ], 401));
         }
         return $request->expectsJson() ? null : route('login');
     }

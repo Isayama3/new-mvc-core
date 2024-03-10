@@ -68,9 +68,9 @@ class Field
      * @param null $value
      * @return string
      */
-    public static function text($name, $label, $value = null, $required = 'true', $placeholder = null)
+    public static function text($name, $label, $value = null, $required = 'true', $placeholder = null, $disabled = false)
     {
-        return view('admin.layouts.partials.form-fields.text', compact('name', 'label', 'value', 'required', 'placeholder'));
+        return view('admin.layouts.partials.form-fields.text', compact('name', 'label', 'value', 'required', 'placeholder', 'disabled'));
     }
 
     /**
@@ -79,9 +79,9 @@ class Field
      * @param null $value
      * @return string
      */
-    public static function email($name, $label, $value = null, $required = 'true', $placeholder = null)
+    public static function email($name, $label, $value = null, $required = 'true', $placeholder = null, $disabled = false)
     {
-        return view('admin.layouts.partials.form-fields.email', compact('name', 'label', 'value', 'required', 'placeholder'));
+        return view('admin.layouts.partials.form-fields.email', compact('name', 'label', 'value', 'required', 'placeholder', 'disabled'));
     }
 
     /**
@@ -89,9 +89,9 @@ class Field
      * @param $label
      * @return string
      */
-    public static function number($name, $label, $value = null, $required = 'true', $placeholder = null)
+    public static function number($name, $label, $value = null, $required = 'true', $placeholder = null, $disabled = false)
     {
-        return view('admin.layouts.partials.form-fields.number', compact('name', 'label', 'value', 'required', 'placeholder'));
+        return view('admin.layouts.partials.form-fields.number', compact('name', 'label', 'value', 'required', 'placeholder', 'disabled'));
     }
 
     /**
@@ -99,9 +99,9 @@ class Field
      * @param $label
      * @return string
      */
-    public static function password($name, $label, $required = 'true', $placeholder = null)
+    public static function password($name, $label, $required = 'true', $placeholder = null, $disabled = false)
     {
-        return view('admin.layouts.partials.form-fields.password', compact('name', 'label', 'required', 'placeholder'));
+        return view('admin.layouts.partials.form-fields.password', compact('name', 'label', 'required', 'placeholder', 'disabled'));
     }
 
     /**
@@ -113,10 +113,40 @@ class Field
      * @param null $selected
      * @return string
      */
-    public static function select($name, $label, $options, $selected = null, $required = 'true', $placeholder = null)
+    public static function select($name, $label, $options, $selected = null, $required = 'true', $placeholder = null, $disabled = false)
     {
         $placeholder = __('admin.choose');
-        return view('admin.layouts.partials.form-fields.select', compact('name', 'label', 'options', 'selected', 'placeholder', 'required', 'placeholder'));
+        return view('admin.layouts.partials.form-fields.select', compact('name', 'label', 'options', 'selected', 'placeholder', 'required', 'placeholder', 'disabled'));
+    }
+
+    /**
+     * @param $name
+     * @param $label
+     * @param $options
+     * @param string $plugin
+     * @param string $placeholder
+     * @param null $selected
+     * @return string
+     */
+    public static function selectWithSearch($name, $label, $options, $selected = null, $required = 'true', $placeholder = null, $disabled = false)
+    {
+        $placeholder = __('admin.choose');
+        return view('admin.layouts.partials.form-fields.select-with-search', compact('name', 'label', 'options', 'selected', 'placeholder', 'required', 'placeholder', 'disabled'));
+    }
+
+    /**
+     * @param $name
+     * @param $label
+     * @param $options
+     * @param string $plugin
+     * @param string $placeholder
+     * @param null $selected
+     * @return string
+     */
+    public static function multiSelect($name, $label, $options, $selected = null, $required = 'true', $placeholder = null, $disabled = false)
+    {
+        $placeholder = __('admin.choose');
+        return view('admin.layouts.partials.form-fields.multi-select', compact('name', 'label', 'options', 'selected', 'placeholder', 'required', 'placeholder', 'disabled'));
     }
 
     /**
@@ -126,18 +156,18 @@ class Field
      * @param null $value
      * @return string
      */
-    public static function checkBox($name, $label, $options, $value = null, $required = 'true', $placeholder = null)
+    public static function checkBox($name, $label, $options, $value = null, $required = 'true', $placeholder = null, $disabled = false)
     {
-        return view('admin.layouts.partials.form-fields.check-box', compact('name', 'label', 'options', 'required', 'placeholder'));
+        return view('admin.layouts.partials.form-fields.check-box', compact('name', 'label', 'options', 'required', 'placeholder', 'disabled'));
     }
     /**
      * @param $name
      * @param $label
      * @param $check -> checked
      */
-    public static function radio($name, $label, $options, $checked = null, $required = 'true', $placeholder = null)
+    public static function radio($name, $label, $options, $checked = null, $required = 'true', $placeholder = null, $disabled = false)
     {
-        return view('admin.layouts.partials.form-fields.radio', compact('name', 'label', 'options', 'checked', 'required', 'placeholder'));
+        return view('admin.layouts.partials.form-fields.radio', compact('name', 'label', 'options', 'checked', 'required', 'placeholder', 'disabled'));
     }
 
     /**
@@ -145,9 +175,9 @@ class Field
      * @param $label
      * @return string
      */
-    public static function textarea($name, $label, $value = null, $required = 'true', $placeholder = null)
+    public static function textarea($name, $label, $value = null, $required = 'true', $placeholder = null, $disabled = false)
     {
-        return view('admin.layouts.partials.form-fields.textarea', compact('name', 'label', 'value', 'required', 'placeholder'));
+        return view('admin.layouts.partials.form-fields.textarea', compact('name', 'label', 'value', 'required', 'placeholder', 'disabled'));
     }
 
     /**
@@ -170,9 +200,9 @@ class Field
      * @param null $selected
      * @return string
      */
-    public static function multiFileUpload($name, $label, $plugin = "file_upload_preview", $required = 'true', $placeholder = null)
+    public static function multiFileUpload($name, $label, $plugin = "file_upload_preview", $required = 'true', $placeholder = null, $disabled = false)
     {
-        return view('admin.layouts.partials.form-fields.multiFile-upload', compact('name', 'label', 'plugin', 'required', 'placeholder'));
+        return view('admin.layouts.partials.form-fields.multiFile-upload', compact('name', 'label', 'plugin', 'required', 'placeholder', 'disabled'));
     }
 
     /**
@@ -181,9 +211,31 @@ class Field
      * @param null $value
      * @return string
      */
-    public static function dateTime($name, $label, $value = null, $required = 'true', $placeholder = null)
+    public static function dateTime($name, $label, $value = null, $required = 'true', $placeholder = null, $disabled = false)
     {
-        return view('admin.layouts.partials.form-fields.date-time', compact('name', 'label', 'value', 'required', 'placeholder'));
+        return view('admin.layouts.partials.form-fields.date-time', compact('name', 'label', 'value', 'required', 'placeholder', 'disabled'));
+    }
+
+     /**
+     * @param $name
+     * @param $label
+     * @param null $value
+     * @return string
+     */
+    public static function date($name, $label, $value = null, $required = 'true', $placeholder = null, $disabled = false)
+    {
+        return view('admin.layouts.partials.form-fields.date', compact('name', 'label', 'value', 'required', 'placeholder', 'disabled'));
+    }
+
+    /**
+     * @param $name
+     * @param $label
+     * @param null $value
+     * @return string
+     */
+    public static function time($name, $label, $value = null, $required = 'true', $placeholder = null, $disabled = false)
+    {
+        return view('admin.layouts.partials.form-fields.time', compact('name', 'label', 'value', 'required', 'placeholder', 'disabled'));
     }
 
     /**
@@ -195,9 +247,9 @@ class Field
      * @param $value
      * @return string
      */
-    public static function dateRange($name, $label, $value = null, $max = null, $min = null, $required = 'true', $placeholder = null)
+    public static function dateRange($name, $label, $value = null, $max = null, $min = null, $required = 'true', $placeholder = null, $disabled = false)
     {
-        return view('admin.layouts.partials.form-fields.date-range', compact('name', 'label', 'value', 'max', 'min', 'required', 'placeholder'));
+        return view('admin.layouts.partials.form-fields.date-range', compact('name', 'label', 'value', 'max', 'min', 'required', 'placeholder', 'disabled'));
     }
 
     public static function toggleBooleanView($name, $label, $model, $url)

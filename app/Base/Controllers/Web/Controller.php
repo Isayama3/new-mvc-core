@@ -23,6 +23,7 @@ class Controller extends \App\Http\Controllers\Controller
     protected $model;
     protected $queryItem;
     protected $hasDelete;
+    protected $hasCreate;
     protected $media;
     protected $cache;
     protected $cache_time;
@@ -62,6 +63,7 @@ class Controller extends \App\Http\Controllers\Controller
         $view_path = null,
         $queryItem = [],
         $hasDelete = false,
+        $hasCreate = true,
         $media = false,
         $cache = false,
         $cache_time = 60 * 1,
@@ -71,6 +73,7 @@ class Controller extends \App\Http\Controllers\Controller
         $this->model = $model;
         $this->queryItem = $queryItem;
         $this->hasDelete = $hasDelete;
+        $this->hasCreate = $hasCreate;
         $this->media = $media;
         $this->cache = $cache;
         $this->cache_time = $cache_time;
@@ -141,13 +144,14 @@ class Controller extends \App\Http\Controllers\Controller
         }
 
         $permissions = $this->permissions;
-        $create_route = str_replace('index', 'create', Request::route()->getName());
+        $create_route = $this->hasCreate ? str_replace('index', 'create', Request::route()->getName()) : null;
         $edit_route = str_replace('index', 'edit', Request::route()->getName());
+        $show_route = str_replace('index', 'show', Request::route()->getName());
         $destroy_route = str_replace('index', 'destroy', Request::route()->getName());
 
         $records = $records->paginate($this->request->per_page ?? 10);
 
-        return view($this->view_path . __FUNCTION__, compact('records', 'permissions', 'create_route', 'edit_route', 'destroy_route'));
+        return view($this->view_path . __FUNCTION__, compact('records', 'permissions', 'show_route', 'create_route', 'edit_route', 'destroy_route'));
     }
 
     public function create()
@@ -176,7 +180,7 @@ class Controller extends \App\Http\Controllers\Controller
             $this->model->flushCache($this->model->getTableName() . '-list');
         }
 
-        $record = $this->model->create(Arr::except($this->request->validated(), 'image'));
+        $record = $this->model->create(Arr::except($this->request->validated(), ['image', 'media']));
 
         if (!empty($this->request->media)) {
             $options = [
@@ -205,13 +209,15 @@ class Controller extends \App\Http\Controllers\Controller
         $this->model = $record;
 
         $index_route = str_replace('create', 'index', Request::route()->getName());
-        return redirect()->route($index_route)->with('success', 'Record added successfully!');
+        return redirect()->route($index_route)->with('success', __('admin.successfully_added'));
     }
 
 
-    public function show($uuid)
+    public function show($id)
     {
-        return view($this->view_path . __FUNCTION__);
+        $record = $this->model->findOrFail($id);
+
+        return view($this->view_path . __FUNCTION__, compact('record'));
     }
 
 
@@ -225,12 +231,16 @@ class Controller extends \App\Http\Controllers\Controller
     public function update($id)
     {
         $model = $this->model->findOrFail($id);
-        $model->update(Arr::except($this->request->validated(), 'image'));
+        $model->update(Arr::except($this->request->validated(), ['image', 'media']));
 
         if (!empty($this->request->media)) {
             $options = [
                 "usage" => ((new \ReflectionClass($model))->getShortName()),
             ];
+
+            if (in_array(AttachmentAttribute::class, class_uses_recursive($this->model))) {
+                Attachment::deleteAttachment($model, multiple: true);
+            }
 
             foreach ($this->request->media as $image) {
                 if ($image) {
@@ -257,7 +267,7 @@ class Controller extends \App\Http\Controllers\Controller
         $this->model = $model;
 
         $index_route = str_replace('update', 'index', Request::route()->getName());
-        return redirect()->route($index_route)->with('success', 'Record updated successfully!');
+        return redirect()->route($index_route)->with('success', __('admin.successfully_updated'));
     }
 
     public function destroy($id)
@@ -269,7 +279,7 @@ class Controller extends \App\Http\Controllers\Controller
                 if ($model->$key()->count() > 0)
                     return response()->json([
                         'status'  => 0,
-                        'message' => __('غير مسموح بالحذف لوجود بيانات مرتبطة'),
+                        'message' => __('admin.delete_is_not_allowed_due_to_related_records'),
                         'id'      => $id
                     ]);
             }
@@ -291,13 +301,13 @@ class Controller extends \App\Http\Controllers\Controller
 
             return response()->json([
                 'status'  => 1,
-                'message' => __('تم الحذف بنجاح'),
+                'message' => __('admin.successfully_deleted'),
                 'id'      => $id
             ]);
         } else {
             return response()->json([
                 'status'  => 0,
-                'message' => __('غير مسموح بالحذف'),
+                'message' => __('admin.delete_is_not_allowed'),
                 'id'      => $id
             ]);
         }
