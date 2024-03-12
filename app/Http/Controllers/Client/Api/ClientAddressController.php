@@ -25,4 +25,14 @@ class ClientAddressController extends Controller
             'client',
         ];
     }
+
+    public function customWhen(): array
+    {
+        return [
+            'condition' => true,
+            'callback' => function ($q) {
+                $q->where('client_id', auth()->guard('client-api')->id());
+            },
+        ];
+    }
 }

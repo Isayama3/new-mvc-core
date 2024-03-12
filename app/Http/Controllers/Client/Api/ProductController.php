@@ -22,6 +22,28 @@ class ProductController extends Controller
     {
         return [
             'category',
+            'brands'
+        ];
+    }
+
+    public function customWhen(): array
+    {
+        return [
+            'condition' => true,
+            'callback' => function ($q) {
+                if (auth()->guard('client-api')->check()) {
+                    $client_cars = auth()->guard('client-api')->user()->cars;
+                    $default_car = $client_cars->where('default', 1)->first();
+
+                    if ($default_car) {
+                        $q->where('status', 1)->whereHas('brands', function ($q) use ($default_car) {
+                            $q->where('brands.id', $default_car->brand_id);
+                        });
+                    }
+                } else {
+                    $q->where('status', 1);
+                }
+            },
         ];
     }
 }

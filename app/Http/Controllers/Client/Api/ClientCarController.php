@@ -26,4 +26,14 @@ class ClientCarController extends Controller
             'brand'
         ];
     }
+
+    public function customWhen(): array
+    {
+        return [
+            'condition' => true,
+            'callback' => function ($q) {
+                $q->where('client_id', auth()->guard('client-api')->id());
+            },
+        ];
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Base\Traits\Custom\NotificationAttribute;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Spatie\Activitylog\LogOptions;
@@ -17,7 +18,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Admin extends Authenticatable
 {
-    use HasFactory, HasRoles, Timestamp, FilterSort, LogsActivity;
+    use HasFactory, HasRoles, Timestamp, FilterSort, LogsActivity, NotificationAttribute;
     protected $table = 'admins';
 
     protected $hidden = [

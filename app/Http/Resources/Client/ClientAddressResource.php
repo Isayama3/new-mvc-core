@@ -13,6 +13,7 @@ class ClientAddressResource extends Resource
             'client_name' => $this->client_name,
             'phone' => $this->phone,
             'address' => $this->address,
+            'default' => $this->default,
             'client' => ClientResource::make($this->whenLoaded('client'))
         ];
     }

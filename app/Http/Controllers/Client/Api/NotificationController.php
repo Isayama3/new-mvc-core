@@ -2,37 +2,33 @@
 
 namespace App\Http\Controllers\Client\Api;
 
-use App\Base\Controllers\API\Controller;
-use App\Models\ClientNotification as Model;
-use App\Http\Requests\Client\Api\ClientNotificationRequest as FormRequest;
-use App\Http\Resources\Client\ClientNotificationResource as Resource;
+use App\Base\Traits\Response\SendResponse;
+use App\Http\Requests\Client\Api\NotificationRequest;
+use App\Http\Resources\Client\NotificationResource;
 
-class NotificationController extends Controller
+class NotificationController
 {
-    public function __construct(FormRequest $request, Model $model, $resource = Resource::class)
+    use SendResponse;
+
+    public function index()
     {
-        parent::__construct(
-            $request,
-            $model,
-            $resource,
-            hasDelete: true
+        $record = auth()->guard('client-api')->user()->notifications->paginate(request()->per_page ?? 10);
+        return $this->sendResponse(
+            NotificationResource::collection($record),
+            withmeta: true,
         );
     }
 
-    public function relations(): array
+    public function show($id)
     {
-        return [
-            'client',
-        ];
+        $record = auth()->guard('client-api')->user()->notifications()->findOrFail($id);
+        return $this->sendResponse(NotificationResource::make($record));
     }
 
-    public function customWhen(): array
+    public function destroy($id)
     {
-        return [
-            'condition' => true,
-            'callback' => function ($q) {
-                return $q->where('id', auth()->guard('client-api')->id());
-            },
-        ];
+        $model = auth()->guard('client-api')->user()->notifications()->findOrFail($id);
+        $model->delete();
+        return $this->SuccessMessage(__('client.successfully_deleted'));
     }
 }

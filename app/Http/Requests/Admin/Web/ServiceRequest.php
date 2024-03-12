@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin\Web;
 
 use App\Base\Request\Web\AdminBaseRequest;
+use App\Models\Service;
 
 class ServiceRequest extends AdminBaseRequest
 {
@@ -23,6 +24,8 @@ class ServiceRequest extends AdminBaseRequest
                         'max_price' => 'required|numeric',
                         'status' => 'nullable|numeric',
                         'category_id' => 'required|exists:categories,id|numeric',
+                        'brands' => 'required|array',
+                        'brands.*' => 'required|exists:brands,id',
                         'media' => 'required|array',
                         'media.*' => 'required|mimes:jpg,png,jpeg,gif,svg,pdf|max:' . config('settings.max_file_upload'),
                     ];
@@ -37,11 +40,26 @@ class ServiceRequest extends AdminBaseRequest
                         'max_price' => 'nullable|numeric',
                         'status' => 'nullable|numeric',
                         'category_id' => 'nullable|exists:categories,id|numeric',
+                        'brands' => 'nullable|array',
+                        'brands.*' => 'nullable|exists:brands,id',
                         'media' => 'nullable|array',
                         'media.*' => 'nullable|mimes:jpg,png,jpeg,gif,svg,pdf|max:' . config('settings.max_file_upload'),
 
                     ];
                 }
         }
+    }
+
+    public function withValidator($validator)
+    {
+        if (app()->runningInConsole()) {
+            return true;
+        }
+
+        $validator->after(function ($validator) {
+            if ($this->method == 'PUT' && $this->brands) {
+                Service::findOrFail($this->service)->brands()->sync($this->brands);;
+            }
+        });
     }
 }

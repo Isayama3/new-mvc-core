@@ -49,7 +49,7 @@ class BookingRequest extends ClientBaseRequest
                         'service_quantity' => 'required|numeric',
                         'min_price' => 'required|numeric',
                         'max_price' => 'required|numeric',
-                        'service_id' => 'required|numeric|exists:services,id',
+                        'service_id' => 'required|numeric|exists:services,id,status,1',
                         'client_id' => 'required|numeric|exists:clients,id',
                     ];
                 }

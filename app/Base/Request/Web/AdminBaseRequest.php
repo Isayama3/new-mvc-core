@@ -18,11 +18,6 @@ class AdminBaseRequest extends FormRequest
         // return Auth::guard('admin')->check();
     }
 
-    // public function prepareForValidation()
-    // {
-    //     $this->merge(['image' => $this->filepond]);
-    // }
-
     public function failedValidation(Validator $validator)
     {
         return redirect()

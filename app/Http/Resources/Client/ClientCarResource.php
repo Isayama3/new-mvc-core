@@ -16,6 +16,7 @@ class ClientCarResource extends Resource
             'plate_source' => $this->plate_source,
             'year' => $this->year,
             'plate_code' => $this->plate_code,
+            'default' => $this->default,
             'color' => $this->color,
             'client_name' => $this->client_name,
             'client_phone' => $this->client_phone,

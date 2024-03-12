@@ -39,7 +39,7 @@ class CartRequest extends ClientBaseRequest
                 }
             case 'POST': {
                     return [
-                        'product_id' => 'required|numeric|exists:products,id',
+                        'product_id' => 'required|numeric|exists:products,id,status,1',
                         'quantity' => 'required|numeric|min:1',
                         'total_price' => 'required|numeric',
                         'client_id' => 'required|numeric|exists:clients,id',

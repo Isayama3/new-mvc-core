@@ -16,6 +16,7 @@ class ProductResource extends Resource
             'price' => $this->price,
             'is_favorite' => $this->isFavorite(),
             'category' => CategoryResource::make($this->whenLoaded('category')),
+            'brands' => BrandResource::collection($this->whenLoaded('brands')),
             'media' => MediaResource::collection($this->getMedia()),
         ];
     }

@@ -85,4 +85,18 @@ return [
     "successfully_deleted" => 'Successfully Deleted',
     'delete_is_not_allowed' => "Delete is not allowed",
     "delete_is_not_allowed_due_to_related_records" => "Delete is not allowed due to related records",
+    'order-placed' => 'Order Placed',
+    'confirmed' => 'Confirmed',
+    'delivery-in-progress' => 'Delivery In-Progress',
+    'delivered' => 'Delivered',
+    'canceled' => 'Canceled',
+    'booking-placed' => 'Booking Placed',
+    'confirmed' => 'Confirmed',
+    'expert-on-the-way' => 'Expert on the way',
+    'reached-at-location' => 'Expert at location',
+    'expert-going-to-start-work' => 'Expert going to work',
+    'completed' => 'Completed',
+    "previous" => "Previous",
+    "next" => "Next",
+    "gallery" => "Gallery"
 ];

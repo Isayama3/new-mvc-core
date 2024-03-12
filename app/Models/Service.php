@@ -6,6 +6,14 @@ use App\Base\Models\Base;
 
 class Service extends Base
 {
+    protected static function boot()
+    {
+        parent::boot();
+        static::created(function ($model) {
+            $model->brands()->attach(request()->brands);
+        });
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -14,6 +22,11 @@ class Service extends Base
     public function clients()
     {
         return $this->belongsToMany(Client::class, 'client_favorite_services');
+    }
+
+    public function brands()
+    {
+        return $this->belongsToMany(Brand::class, 'service_brands')->withTimestamps();;
     }
 
     public function isFavorite()

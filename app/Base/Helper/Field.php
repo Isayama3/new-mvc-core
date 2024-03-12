@@ -45,7 +45,7 @@ class Field
     {
         if (session()->has('errors')) {
             if (session()->get('errors')->has($name)) {
-                return 'has-error';
+                return 'is-invalid';
             }
         }
     }

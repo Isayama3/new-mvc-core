@@ -22,6 +22,7 @@ class ProductController extends Controller
     {
         return [
             'category',
+            'brands'
         ];
     }
 }

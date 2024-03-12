@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Client\Api;
 
 use App\Base\Request\Api\ClientBaseRequest;
+use App\Models\ClientCar;
 
 class ClientCarRequest extends ClientBaseRequest
 {
@@ -30,6 +31,7 @@ class ClientCarRequest extends ClientBaseRequest
                         'color' => 'required|string',
                         'client_name' => 'required|string',
                         'client_phone' => 'required|numeric',
+                        'default' => 'nullable|numeric|min:0|max:1',
                         'client_id' => 'required|exists:clients,id',
                         'brand_id' => 'required|exists:brands,id',
                         'media' => 'required|array',
@@ -46,12 +48,28 @@ class ClientCarRequest extends ClientBaseRequest
                         'color' => 'nullable|string',
                         'client_name' => 'nullable|string',
                         'client_phone' => 'nullable|numeric',
-                        'client_id' => 'nullable|exists:clients,id',
+                        'default' => 'nullable|numeric|min:0|max:1',
                         'brand_id' => 'nullable|exists:brands,id',
                         'media' => 'nullable|array',
                         'media.*' => 'mimes:jpg,png,jpeg,gif,svg,pdf|max:' . config('settings.max_file_upload'),
                     ];
                 }
         }
+    }
+
+    public function withValidator($validator)
+    {
+        if (app()->runningInConsole()) {
+            return true;
+        }
+
+        $validator->after(function ($validator) {
+            if ($this->method == 'PUT') {
+                if ($this->default == 1) {
+                    auth()->guard('client-api')->user()->cars()->update(['default' => 0]);
+                    ClientCar::findOrFail($this->client_car)->update(['default' => 1]);
+                }
+            }
+        });
     }
 }

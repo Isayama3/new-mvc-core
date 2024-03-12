@@ -18,7 +18,6 @@ class SortUsingRelationship implements Sort
         $sortColumn = @$relationships[3];
 
         return $query->select($second . ".*")
-            // User::getTableName()
             ->leftJoin('', "$first.id", '=', "$second.$foreignKey")
             ->orderBy($sortColumn, $direction);
     }

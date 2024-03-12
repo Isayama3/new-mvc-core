@@ -85,5 +85,19 @@ return [
     "successfully_deleted" => 'تم الحذف بنجاح',
     'delete_is_not_allowed' => "غير مسموح بالحذف",
     "delete_is_not_allowed_due_to_related_records" => "غير مسموح بالحذف لوجود بيانات مرتبطة",
+    'order-placed' => 'تم الطلب',
+    'confirmed' => 'تم التأكيد',
+    'delivery-in-progress' => 'جاري التوصيل',
+    'delivered' => 'تم التوصيل',
+    'canceled' => 'تم الإلغاء',
+    'booking-placed' => 'تم الحجز',
+    'confirmed' => 'تم التأكيد',
+    'expert-on-the-way' => 'الخبير في الطريق',
+    'reached-at-location' => 'وصل إلى الموقع',
+    'expert-going-to-start-work' => 'الخبير سيبدأ العمل قريبًا',
+    'completed' => 'تم الانتهاء',
+    "previous" => "السابق",
+    "next" => "التالي",
+    "gallery" => "معرض الصور"
 
 ];

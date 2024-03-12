@@ -12,16 +12,15 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use App\Base\Traits\Custom\AttachmentAttribute;
+use App\Base\Traits\Custom\NotificationAttribute;
 use App\Base\Traits\Response\SendResponse;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Cache;
 
-
-
 class Base extends Model
 {
-    use HasFactory, Timestamp, FilterSort, LogsActivity, AttachmentAttribute, SendResponse;
+    use HasFactory, Timestamp, FilterSort, LogsActivity, AttachmentAttribute, SendResponse, NotificationAttribute;
 
     protected $guarded = ['id', 'uuid', 'created_at', 'updated_at'];
     protected $hidden = [
@@ -71,7 +70,6 @@ class Base extends Model
             ->where('attachmentable_type', 'REGEXP', '\\\\' . class_basename($this) . '$')
             ->where('attachmentable_id', $this->id)
             ->get();
-            
     }
 
     public static function generate_unique_code($model, $col = 'code', $length = 4, $letters = true, $numbers = true, $symbols = true): string
@@ -157,7 +155,7 @@ class Base extends Model
 
         return secure_asset($this->attributes['image']);
     }
-    
+
     public function getLocaleAttribute($columnName)
     {
         $locale = app()->getLocale();

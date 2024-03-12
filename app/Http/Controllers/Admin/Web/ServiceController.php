@@ -22,6 +22,7 @@ class ServiceController extends Controller
     {
         return [
             'category',
+            'brands'
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Base\Traits\Custom\NotificationAttribute;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Spatie\Activitylog\LogOptions;
@@ -16,7 +17,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Client extends Authenticatable
 {
-    use HasFactory, Timestamp, FilterSort, LogsActivity, HasApiTokens;
+    use HasFactory, Timestamp, FilterSort, LogsActivity, HasApiTokens, NotificationAttribute;
     protected $table = 'clients';
 
     protected $hidden = [
@@ -126,7 +127,7 @@ class Client extends Authenticatable
         return secure_asset($this->attributes['image']);
     }
 
-    public function address()
+    public function addresses()
     {
         return $this->hasMany(ClientAddress::class);
     }
@@ -149,10 +150,5 @@ class Client extends Authenticatable
     public function cart()
     {
         return $this->hasMany(Cart::class);
-    }
-
-    public function notifications()
-    {
-        return $this->hasMany(ClientNotification::class);
     }
 }

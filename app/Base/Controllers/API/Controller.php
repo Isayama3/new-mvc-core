@@ -89,7 +89,6 @@ class Controller extends LaravelController
         }
     }
 
-
     public function customWhen(): array
     {
         return [
@@ -98,6 +97,7 @@ class Controller extends LaravelController
             },
         ];
     }
+
     public function can($route)
     {
         $action = 'api.v1.admin.' . $route;
@@ -262,8 +262,6 @@ class Controller extends LaravelController
             filter: $this->filter(),
         );
     }
-
-
 
     public function list()
     {

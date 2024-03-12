@@ -13,12 +13,10 @@ class FilterUsingInitialPrice implements Filter
         $key = $input[1];
         $table = $input[0];
         if ($key == 'initial_price_to') {
-
             return $query->where($table . '.initial_price', '<=', $value);
         }
 
         if ($key == 'initial_price_from') {
-
             return $query->where($table . '.initial_price', '>=', $value);
         }
     }

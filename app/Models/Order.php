@@ -5,53 +5,22 @@ namespace App\Models;
 use Carbon\Carbon;
 use App\Base\Models\Base;
 use App\Enums\OrderStatus;
+use App\Base\Notification\FCMService;
+use App\Base\Notification\NotificationService;
+use App\Services\OrderService;
 
 class Order extends Base
 {
     protected static function boot()
     {
         parent::boot();
-        static::created(function ($model) {
-            $client = auth()->guard('client-api')->user();
-            $total_price = 0;
-            foreach ($client->cart as $item) {
-                $model->products()->attach($item->product_id, [
-                    'client_id' => $item->client_id,
-                    'product_id' => $item->product_id,
-                    'quantity' => $item->quantity,
-                    'total_price' => $item->total_price
-                ]);
 
-                $total_price += $item->total_price * $item->quantity;
-            }
-
-            $status_history = [
-                ['status' => OrderStatus::ORDERPLACED->value, 'created_at' => Carbon::now()->format('Y-m-d H:i:s')]
-            ];
-
-            $model->update([
-                'total_price' => $total_price,
-                'status_history' => json_encode($status_history),
-            ]);
-
-            $client->cart()->delete();
+        static::created(function ($order) {
+            (new OrderService())->processCreatedOrder($order);
         });
 
-        static::updated(function ($model) {
-            if ($model->isDirty('status')) {
-                $history = [];
-                $status_history = json_decode($model->status_history, true);
-                foreach ((array)$status_history as $hsi) {
-                    $history[] = $hsi;
-                }
-                $history[] = ['status' => $model->status, 'created_at' => Carbon::now()->format('Y-m-d H:i:s')];
-                if (!empty($history)) {
-                    $model->syncOriginal();
-                    $model->update([
-                        'status_history' => json_encode($history),
-                    ]);
-                }
-            }
+        static::updated(function ($order) {
+            (new OrderService())->processUpdatedOrderStatus($order);
         });
     }
 

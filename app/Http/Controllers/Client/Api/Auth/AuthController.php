@@ -38,7 +38,7 @@ class AuthController
                     'token' => $token,
                     'client' => new ClientResource($client)
                 ],
-                msg: __('client.logout_successfully')
+                msg: __('client.login_successfully')
             );
         }
 
