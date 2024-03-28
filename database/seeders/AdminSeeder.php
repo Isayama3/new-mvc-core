@@ -23,7 +23,7 @@ class AdminSeeder extends Seeder
             'password' => bcrypt('123@Ahmed'),
             'name' => 'hamada',
             'email' => 'hack@zipe.com',
-            // 'phone' => '01067214731',
+            'phone' => '01067214731',
         ]);
 
         Admin::create([

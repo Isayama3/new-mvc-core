@@ -98,5 +98,6 @@ return [
     'completed' => 'Completed',
     "previous" => "Previous",
     "next" => "Next",
-    "gallery" => "Gallery"
+    "gallery" => "Gallery",
+    "users"=> "Users"
 ];
