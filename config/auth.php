@@ -44,9 +44,9 @@ return [
             'driver' => 'session',
             'provider' => 'admins',
         ],
-        'client-api' => [
+        'user-api' => [
             'driver' => 'sanctum',
-            'provider' => 'clients',
+            'provider' => 'users',
         ],
         'api' => [
             'driver' => 'token',
@@ -83,9 +83,9 @@ return [
             'model' => App\Models\Admin::class,
         ],
 
-        'clients' => [
+        'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Client::class,
+            'model' => App\Models\User::class,
         ],
     ],
 
