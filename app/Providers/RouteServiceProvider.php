@@ -26,8 +26,8 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapAdminWebRoutes();
         $this->mapAdminAuthRoutes();
 
-        $this->mapClientApiRoutes();
-        $this->mapClientAuthRoutes();
+        $this->mapUserApiRoutes();
+        $this->mapUserAuthRoutes();
     }
 
     protected function mapWebRoutes()
@@ -73,22 +73,22 @@ class RouteServiceProvider extends ServiceProvider
             ->group(base_path('routes/admin/web/auth.php'));
     }
 
-    protected function mapClientApiRoutes()
+    protected function mapUserApiRoutes()
     {
-        Route::prefix('client')
-            ->namespace($this->namespace . '\Client\Api')
+        Route::prefix('user')
+            ->namespace($this->namespace . '\User\Api')
             ->prefix('api/v1/')
-            ->name('api.v1.client.')
+            ->name('api.v1.user.')
             ->middleware(['localizationRedirect', 'localeViewPath'])
-            ->group(base_path('routes/client/api/client.php'));
+            ->group(base_path('routes/user/api/user.php'));
     }
 
-    protected function mapClientAuthRoutes()
+    protected function mapUserAuthRoutes()
     {
         Route::prefix('api/v1/')
-            ->middleware(['guest:client-api', 'localizationRedirect', 'localeViewPath'])
-            ->namespace($this->namespace . '\Client\Api\Auth')
-            ->name('api.v1.client.')
-            ->group(base_path('routes/client/api/auth.php'));
+            ->middleware(['guest:user-api', 'localizationRedirect', 'localeViewPath'])
+            ->namespace($this->namespace . '\User\Api\Auth')
+            ->name('api.v1.user.')
+            ->group(base_path('routes/user/api/auth.php'));
     }
 }

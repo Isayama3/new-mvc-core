@@ -1,32 +1,8 @@
-@extends('admin.admins.layouts.main',[
-                                    'page_header'       => __('المستخدمين'),
-                                    'page_description'  => __('تعديل مستخدم'),
-                                    'link' =>url('admin/role')
-                                ])
-@section('content')
-    <!-- general form elements -->
-    <div class="ibox ibox-primary">
-        <!-- form start -->
-        {!! Form::model($model,[
-                                'url'=>url('Admin/users/'.$model->id),
-                                'id'=>'myForm',
-                                'role'=>'form',
-                                'method'=>'PUT',
-                                'files' => true
-                                ])!!}
+@extends('admin.layouts.partials.crud-components.edit-page')
 
-        <div class="ibox-content">
-            <div class="clearfix"></div>
-            <br>
-            @include('admin.users.form')
-
-            <div class="ibox-footer">
-                <button type="submit" class="btn btn-primary">{{__('حفظ')}}</button>
-            </div>
-
-        </div>
-        {!! Form::close()!!}
-
-    </div><!-- /.box -->
-
-@endsection
+@section('form')
+    {{ \App\Base\Helper\Field::text(name: 'name', label: 'name', required: 'false', placeholder: 'name', value: $record->name) }}
+    {{ \App\Base\Helper\Field::email(name: 'email', label: 'email', required: 'false', placeholder: 'email', value: $record->email) }}
+    {{ \App\Base\Helper\Field::number(name: 'phone', label: 'phone', required: 'false', placeholder: 'phone', value: $record->phone) }}
+    {{ \App\Base\Helper\Field::fileWithPreview(name: 'image', label: 'image', required: 'false', path: $record->image_url) }}
+@stop

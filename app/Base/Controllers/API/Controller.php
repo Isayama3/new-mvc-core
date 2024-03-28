@@ -327,7 +327,7 @@ class Controller extends LaravelController
         $this->model = $record;
         return $this->sendResponse(
             new $this->resource($record),
-            __('client.successfully_added'),
+            __('user.successfully_added'),
             true,
             201
         );
@@ -384,7 +384,7 @@ class Controller extends LaravelController
 
         $this->model = $model;
 
-        return $this->sendResponse(new $this->resource($model), __('client.successfully_updated'));
+        return $this->sendResponse(new $this->resource($model), __('user.successfully_updated'));
     }
 
     public function destroy($id)
@@ -410,9 +410,9 @@ class Controller extends LaravelController
                 $this->model->flushCache($this->model->getTableName());
                 $this->model->flushCache($this->model->getTableName() . '-list');
             }
-            return $this->SuccessMessage(__('client.successfully_deleted'));
+            return $this->SuccessMessage(__('user.successfully_deleted'));
         } else {
-            return $this->ErrorMessage(__('client.delete_is_not_allowed'));
+            return $this->ErrorMessage(__('user.delete_is_not_allowed'));
         }
     }
 

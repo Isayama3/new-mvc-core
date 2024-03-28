@@ -21,11 +21,11 @@ class HomeController extends Controller
     public function index()
     {
         $dataCounts = [
-            'clients' => DB::table('clients')->count(),
-            'orders' => DB::table('orders')->count(),
-            'products' => DB::table('products')->count(),
-            'services' => DB::table('services')->count(),
-            'bookings' => DB::table('bookings')->count(),
+            // 'clients' => DB::table('clients')->count(),
+            // 'orders' => DB::table('orders')->count(),
+            // 'products' => DB::table('products')->count(),
+            // 'services' => DB::table('services')->count(),
+            // 'bookings' => DB::table('bookings')->count(),
         ];
 
         return view('admin.home.index', compact('dataCounts'));

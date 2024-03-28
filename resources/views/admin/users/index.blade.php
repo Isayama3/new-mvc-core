@@ -1,150 +1,74 @@
-@extends('admin.admins.layouts.main',[
-								'page_header'		=> __('المستخدمين'),
-								'page_description'	=> __('عرض المستخدمين'),
-'link' => url('admin/users')
-								])
-@section('content')
-    <div class="ibox ibox-primary">
-        <div class="ibox-title">
-            <div class="pull-left">
-                @can('اضافة مستخدم')
-                    <a href="{{url('admin/users/create')}}" class="btn btn-primary">
-                        <i class="fa fa-plus"></i>{{__('اضافة مستخدم جديد')}}
-                    </a>
-                @endcan
-            </div>
-            <div class="clearfix"></div>
-        </div>
+@extends('admin.layouts.partials.crud-components.table', [
+    'page_header' => __('admin.users'),
+])
 
-        <div class="">
-            {!! Form::open([
-                'method' => 'GET'
-            ]) !!}
-            <div class="col-md-3">
-                <div class="">
-                    <label for="">&nbsp;</label>
-                    {!! Form::text('name',old('name'),[
-                        'class' => 'form-control',
-                        'placeholder' => __('الاسم')
-                    ]) !!}
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="">&nbsp;</label>
-                    {!! Form::text('role_name',old('role_name'),[
-                        'class' => 'form-control',
-                        'placeholder' => __('اسم الصلاحية')
-                    ]) !!}
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label for="">&nbsp;</label>
-                    {!! Form::text('from',old('from'),[
-                        'class' => 'form-control datepicker',
-                        'placeholder' => __('بداية تاريخ الاضافة')
-                    ]) !!}
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label for="">&nbsp;</label>
-                    {!! Form::text('to',old('to'),[
-                        'class' => 'form-control datepicker',
-                        'placeholder' => __('انتهاء تاريخ الاضافة')
-                    ]) !!}
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label for="">&nbsp;</label>
-                    <button class="btn btn-flat btn-block btn-primary">{{__('بحث')}}</button>
-                </div>
-            </div>
-            {!! Form::close() !!}
-        </div>
-
-        <div class="ibox-content">
-            @if(!empty($users) && count($users)>0)
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                        <th>#</th>
-                        <th>{{__('الاسم')}}</th>
-                        <th>{{__('البريد الالكتروني')}}</th>
-                        <th class="text-center">{{__('الصلاحيات')}}</th>
-                        @can('تعديل مستخدم')
-                            <th class="text-center">{{__('تعديل')}}</th>
-                        @endcan
-                        @can('حذف مستخدم')
-                            <th class="text-center">{{__('حذف')}}</th>
-                        @endcan
-                        </thead>
-                        <tbody>
-                        @php $count = 1; @endphp
-                        @foreach($users as $user)
-                            <tr id="removable{{$user->id}}">
-                                <td>{{$count}}</td>
-                                <td>{{optional($user)->name}}</td>
-                                <td>{{optional($user)->email}}</td>
-                                @can('تعديل مستخدم')
-                                    <td>
-                                        @foreach($user->roles as $role)
-                                            <div class="col-lg-4">
-                                                <label style="    background-color: #19A689;
-    color: white;
-    width: 200px;
-    text-align: center;
-    padding: 6px 0px;
-    border-radius: 6px;">{{$role->name}}</label>
-                                            </div>
-                                        @endforeach
-                                    </td>
-                                @endcan
-                                @can('تعديل مستخدم')
-                                    <td class="text-center"><a href="{{url('admin/users/' . $user->id .'/edit')}}"
-                                                               class="btn btn-xs btn-success"><i
-                                                    class="fa fa-edit"></i></a>
-                                    </td>
-                                @endcan
-                                @can('حذف مستخدم')
-                                    @if($user->id === 1 )
-                                        <td class="text-center danger">{{__('لا يمكن الحذف')}}</td>
-                                    @else
-                                        <td class="text-center">
-                                            <button id="{{$user->id}}" data-token="{{ csrf_token() }}"
-                                                    data-route="{{URL::route('users.destroy',$user->id)}}"
-                                                    type="button"
-                                                    class="destroy btn btn-danger btn-xs"><i
-                                                        class="fa fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    @endif
-                                @endcan
-                            </tr>
-                            @php $count ++; @endphp
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                {!! $users->render() !!}
-            @else
-                <div>
-                    <h3 class="text-info" style="text-align: center">{{__('لا توجد بيانات للعرض')}} </h3>
-                </div>
-            @endif
-        </div>
-    </div>
+@section('filter')
+    @include('admin.users.filter', [
+        'create_route' => $create_route,
+    ])
 @stop
 
-@section('script')
-    <script>
-        lightbox.option({
-            'resizeDuration': 200,
-            'wrapAround': true,
-            'showImageNumberLabel': false,
+@section('table')
+    <thead>
+        <tr>
+            <th>{{ __('#') }}</th>
+            <th>{{ __('admin.name') }}</th>
+            <th>{{ __('admin.email') }}</th>
+            <th>{{ __('admin.phone') }}</th>
+            <th>{{ __('admin.image') }}</th>
+            <th style="width: 1px">{{ __('admin.actions') }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($records as $record)
+            <tr id="removable{{ $record->id }}">
+                <td>{{ $record->id }}</td>
+                <td>{{ $record->name }}</td>
+                <td>{{ $record->email }}</td>
+                <td>{{ $record->phone }}</td>
+                <td>
+                    <div class="avatar avatar-lg me-3" data-bs-toggle="modal" data-bs-target="#image_{{ $record->id }}">
+                        <img src="{{ $record->image_url }}" alt="Avatar" class="avatar-img">
+                    </div>
+                    <div class="modal fade text-left" id="image_{{ $record->id }}" tabindex="-1"
+                        aria-labelledby="myModalLabel140" style="display: none;" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-full" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header bg-info">
+                                    <h5 class="modal-title white" id="myModalLabel140"></h5>
+                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+                                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="{{ $record->image_url }}" style="max-height: 100%; max-width: 100%;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td style="">
+                    <div style="display:flex; gap:2px; justify-content:center;">
+                         {{-- <a href="{{ route($show_route, $record->id) }}">
+                            <button class="btn icon icon-left btn-primary me-2 text-nowrap"><i class="bi bi-eye-fill"></i></button>
+                        </a> --}}
+                        <a href="{{ route($edit_route, $record->id) }}">
+                            <button class="btn icon icon-left btn-success me-2 text-nowrap"><i class="bi bi-pencil-square"></i></button>
+                        </a>
+                        <button id="{{ $record->id }}" data-token="{{ csrf_token() }}"
+                            data-route="{{ route($destroy_route, $record->id) }}" type="button"
+                            class="btn icon icon-left btn-danger me-2 text-nowrap destroy">
+                            <i class="bi bi-trash-fill"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        @endforeach
+    </tbody>
 
-        })
-    </script>
 @stop

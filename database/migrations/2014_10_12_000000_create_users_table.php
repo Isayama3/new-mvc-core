@@ -15,6 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('phone')->unique();
+            $table->string('image')->nullable();
+            $table->integer('status')->default(1);
+            $table->string('password');
+            $table->text('device_token')->nullable();
+            $table->text('os_type')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
